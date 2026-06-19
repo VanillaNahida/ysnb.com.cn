@@ -43,7 +43,7 @@ ysnb.com.cn/
 ├── enkaapi.php           # PHP API 代理（Enka / Minigg / 米游社）
 ├── video-playlist.json   # 未满 18 岁跳转视频列表，非常的温馨阳光
 ├── hotvideo.json         # 热门大片随机视频列表
-├── 二游列表.json          # 友商游戏列表
+├── acg-game-list.json         # 友商游戏列表
 ├── favicon.ico           # 网站图标
 ├── .gitignore            # Git 忽略配置
 └── README.md             # 本文件
