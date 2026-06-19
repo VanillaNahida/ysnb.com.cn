@@ -1538,7 +1538,7 @@
         });
 
         function goRival() {
-            fetch('二游列表.json')
+            fetch('acg-game-list.json')
                 .then(function (resp) {
                     if (!resp.ok) throw new Error('Failed to load');
                     return resp.json();
