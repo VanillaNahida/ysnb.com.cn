@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>页面未找到 · 目录导航</title>
+    
+    <!-- 引用 Blueaka 系列字体 (来自 CDN) -->
+    <link rel="stylesheet" href="//cdn.xcnahida.cn/fonts/bluearchive/Blueaka/Blueaka.css">
+    <link rel="stylesheet" href="//cdn.xcnahida.cn/fonts/bluearchive/Blueaka_Bold/Blueaka_Bold.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Blueaka", "BlinkMacSystemFont", "Segoe UI", Roboto, sans-serif;
+            font-weight: 400;
+        }
+        
+        strong, b, h1, h2, h3, h4, h5, h6, .bold {
+            font-family: "Blueaka_Bold", "Blueaka", sans-serif;
+            font-weight: 700;
+        }
+
+        :root {
+            --bg-color: #eff3f0;
+            --card-bg: #ffffff;
+            --text-primary: #1f2e2a;
+            --text-secondary: #4a5b55;
+            --hover-bg: #e9f3e4;
+            --border-light: #e2e7e3;
+            --accent-leaf: #2e7d5e;
+            --shadow-sm: 0 6px 14px rgba(0, 0, 0, 0.02), 0 2px 4px rgba(0, 0, 0, 0.03);
+            --error-soft: #f2ece4;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            padding: 36px 20px 48px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 680px;
+            background: var(--card-bg);
+            border-radius: 32px;
+            box-shadow: var(--shadow-sm);
+            padding: 28px 28px 36px;
+            transition: all 0.2s ease;
+        }
+
+        /* 标题区域 */
+        .title-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+            border-bottom: 2px solid var(--border-light);
+            padding-bottom: 18px;
+        }
+
+        .title-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.05));
+        }
+
+        .title-icon svg {
+            width: 38px;
+            height: 38px;
+            display: block;
+        }
+
+        .title-text h2 {
+            font-family: "Blueaka_Bold", "Blueaka", sans-serif;
+            font-weight: 700;
+            font-size: 1.85rem;
+            letter-spacing: -0.3px;
+            background: linear-gradient(135deg, #1d4636, #2e7d5e);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        /* 错误核心区域 */
+        .error-body {
+            margin: 32px 0 16px;
+            text-align: center;
+        }
+
+        .error-code {
+            font-family: "Blueaka_Bold", "Blueaka", sans-serif;
+            font-size: 6rem;
+            font-weight: 800;
+            line-height: 1;
+            color: #cbdcd2;
+            letter-spacing: 4px;
+            margin-bottom: 12px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+        }
+
+        .error-message {
+            font-size: 1.6rem;
+            font-family: "Blueaka_Bold", "Blueaka", sans-serif;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+
+        .error-description {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            max-width: 400px;
+            margin: 0 auto 28px;
+            line-height: 1.4;
+            background: #f6f9f7;
+            padding: 8px 20px;
+            border-radius: 60px;
+            display: inline-block;
+        }
+
+        .divider {
+            margin: 12px auto 28px;
+            width: 48px;
+            height: 2px;
+            background: var(--border-light);
+            border-radius: 2px;
+        }
+
+        /* 建议动作 */
+        .action-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 16px;
+            margin: 28px 0 24px;
+        }
+
+        .action-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--bg-color);
+            padding: 10px 24px;
+            border-radius: 60px;
+            text-decoration: none;
+            font-family: "Blueaka_Bold", "Blueaka", sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--accent-leaf);
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+
+        .action-btn svg {
+            width: 18px;
+            height: 18px;
+            fill: none;
+            stroke: var(--accent-leaf);
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .action-btn:hover {
+            background: var(--hover-bg);
+            transform: translateY(-2px);
+            border-color: var(--border-light);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.02);
+        }
+
+        .primary-btn {
+            background: var(--accent-leaf);
+            color: white;
+        }
+
+        .primary-btn svg {
+            stroke: white;
+        }
+
+        .primary-btn:hover {
+            background: #236b50;
+            transform: translateY(-2px);
+        }
+
+        /* 辅助信息区：可能缺失的路径提示 */
+        .path-hint {
+            background: #fafcfb;
+            margin-top: 24px;
+            border-radius: 24px;
+            padding: 16px 20px;
+            font-size: 0.75rem;
+            text-align: left;
+            border: 1px solid var(--border-light);
+            font-family: "Blueaka", sans-serif;
+        }
+
+        .path-hint-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+            font-size: 0.8rem;
+            font-family: "Blueaka_Bold", "Blueaka", sans-serif;
+            color: var(--text-secondary);
+        }
+
+        .path-hint-content {
+            color: #5d7a6e;
+            word-break: break-all;
+            background: #f2f6f3;
+            padding: 8px 16px;
+            border-radius: 28px;
+            font-family: monospace;
+            font-size: 0.75rem;
+            letter-spacing: 0.2px;
+        }
+
+        .footer-note {
+            margin-top: 32px;
+            text-align: center;
+            font-size: 0.7rem;
+            border-top: 1px solid var(--border-light);
+            padding-top: 22px;
+            color: #91a69c;
+            font-family: "Blueaka", sans-serif;
+        }
+
+        @media (max-width: 550px) {
+            .container {
+                padding: 20px 18px;
+            }
+            .title-text h2 {
+                font-size: 1.5rem;
+            }
+            .error-code {
+                font-size: 4rem;
+            }
+            .error-message {
+                font-size: 1.3rem;
+            }
+            .action-btn {
+                padding: 6px 18px;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- 标题区域与导航页保持统一视觉 -->
+    <div class="title-section">
+        <div class="title-icon">
+            <!-- 简洁文档/文件夹标志 保持风格 -->
+            <svg viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" width="38" height="38">
+                <path d="M112 16h736v992H112z" fill="#AED796"></path>
+                <path d="M392.176 846.08c8.032 4.544 18.208 2.032 22.704-5.616l159.344-256.496c4.496-7.648 1.648-17.504-6.384-22.048s-18.208-2.032-22.704 5.616l-159.344 256.496c-4.512 7.632-1.648 17.504 6.384 22.048z m204.416-50.672a15.84 15.84 0 0 0 22.464 0l79.344-79.344c0.336-0.288 0.752-0.384 1.056-0.704a15.776 15.776 0 0 0 4.592-11.52 15.808 15.808 0 0 0-4.656-11.264c-0.224-0.224-0.512-0.304-0.752-0.496l-79.552-79.552a15.872 15.872 0 1 0-22.464 22.464l68.944 68.944-68.992 68.992a15.888 15.888 0 0 0 0.016 22.48zM261.6 716.064l79.328 79.344a15.84 15.84 0 0 0 22.464 0 15.84 15.84 0 0 0 0-22.464L294.4 703.952l68.944-68.944a15.872 15.872 0 1 0-22.464-22.464l-79.552 79.552c-0.224 0.208-0.528 0.288-0.736 0.496a15.744 15.744 0 0 0-4.656 11.264 15.808 15.808 0 0 0 4.592 11.52c0.32 0.288 0.736 0.4 1.072 0.688zM896 128h-32V32a32 32 0 0 0-32-32H128a32 32 0 0 0-32 32v960a32 32 0 0 0 32 32h704a32 32 0 0 0 32-32V416h32a32 32 0 0 0 32-32V160a32 32 0 0 0-32-32z m-64 0H352a32 32 0 0 0-32 32v224a32 32 0 0 0 32 32h480v576H128V32h704v96z" fill="#2B3139"></path>
+                <path d="M352 160h544v224H352z" fill="#FFFFFF"></path>
+                <path d="M387.696 213.824h35.184v39.664h32.944v-39.664h35.184V328h-35.184v-45.264H422.88V328h-35.184v-114.176zM535.856 243.088h-31.984v-29.264h99.136v29.264h-31.984V328h-35.168v-84.912zM615.872 213.824h50.048l16.32 67.168h0.32l16.32-67.168h50.064V328H715.68v-73.248h-0.336l-19.84 73.248H669.28l-19.824-73.248h-0.336V328h-33.248v-114.176zM767.056 213.824h35.184v84.912h50.528V328h-85.712v-114.176z" fill="#2B3139"></path>
+            </svg>
+        </div>
+        <div class="title-text">
+            <h2>页面未找到 · 404</h2>
+        </div>
+    </div>
+
+    <div class="error-body">
+        <div class="error-code">404</div>
+        <div class="error-message">迷路的页面</div>
+        <div class="error-description">您访问的页面似乎不存在，或是路径有误</div>
+        <div class="divider"></div>
+    </div>
+
+    <div class="action-grid">
+        <a href="https://ysnb.com.cn" class="action-btn primary-btn">
+            <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+            返回首页
+        </a>
+        <a href="javascript:history.back();" class="action-btn">
+            <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            返回上一页
+        </a>
+    </div>
+
+    <!-- 智能提示：展示当前请求的路径（如果可以获得的话），帮助用户诊断，但不含表情符号 -->
+    <div class="path-hint" id="pathHint">
+        <div class="path-hint-title">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="stroke: #6f8f82; stroke-width: 1.8;">
+                <path d="M20 12V8H4V12M20 12L12 20L4 12M20 12H4" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M12 20V12" stroke="currentColor" stroke-linecap="round"/>
+            </svg>
+            <span>当前请求路径</span>
+        </div>
+        <div class="path-hint-content" id="requestPathDisplay">/未捕获的地址</div>
+        <div style="margin-top: 12px; font-size:0.7rem; line-height:1.4; color:#70877c;">
+            • 请检查链接是否完整，或确认小游戏目录名称是否正确<br>
+            • 返回导航页可查看所有可用的小游戏列表
+        </div>
+    </div>
+
+    <footer class="footer-note">
+        📁 原神牛逼 · 目录导航 · 404 定制页 
+    </footer>
+</div>
+
+<script>
+    (function() {
+        // 获取当前请求的路径并显示在友好提示区域（干净无表情）
+        var currentPath = window.location.pathname;
+        if (!currentPath || currentPath === '/') {
+            currentPath = '(根目录)';
+        }
+        var pathDisplayElem = document.getElementById('requestPathDisplay');
+        if (pathDisplayElem) {
+            // 简单解码/保留原始路径，不做过滤，保证信息明确
+            var decodedPath = decodeURIComponent(currentPath);
+            pathDisplayElem.textContent = decodedPath;
+        }
+        
+        // 可选: 添加一个额外判断，如果referer来自导航页可显示帮助文案
+        var referrer = document.referrer;
+        var hintContainer = document.querySelector('.path-hint');
+        if (referrer && referrer.includes(window.location.hostname) && hintContainer) {
+            // 不增加emoji,但可增加补充文字（保持简洁）
+            var extraSpan = document.createElement('div');
+            extraSpan.style.marginTop = '8px';
+            extraSpan.style.fontSize = '0.7rem';
+            extraSpan.style.color = '#4f7868';
+            extraSpan.innerHTML = '提示：您可能从目录页点击了失效的链接，建议返回目录查看当前可用的小游戏。';
+            hintContainer.appendChild(extraSpan);
+        }
+    })();
+</script>
+
+<script>
+    // 二次确保移除可能从任何地方插入的emoji (hardcore 但不影响性能)
+    (function cleanEmoji() {
+        const allTextNodes = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+            acceptNode: function(node) {
+                // 过滤script/style内容
+                if (node.parentElement && (node.parentElement.tagName === 'SCRIPT' || node.parentElement.tagName === 'STYLE')) {
+                    return NodeFilter.FILTER_REJECT;
+                }
+                return NodeFilter.FILTER_ACCEPT;
+            }
+        });
+        const emojiRegex = /[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{1F1E0}-\u{1F1FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{1F900}-\u{1F9FF}\u{1F1E6}-\u{1F1FF}\u{1F191}-\u{1F251}\u{FE0F}\u{200D}]/gu;
+        let nodesToUpdate = [];
+        while (allTextNodes.nextNode()) {
+            let node = allTextNodes.currentNode;
+            if (node.textContent && emojiRegex.test(node.textContent)) {
+                nodesToUpdate.push(node);
+            }
+        }
+        for (let node of nodesToUpdate) {
+            let cleaned = node.textContent.replace(emojiRegex, '');
+            if (cleaned !== node.textContent) {
+                node.textContent = cleaned;
+            }
+        }
+        
+        const footerElem = document.querySelector('.footer-note');
+        if (footerElem) {
+            let footerText = footerElem.innerHTML;
+            footerText = footerText.replace(/[\u{1F300}-\u{1F5FF}\u{1F600}-\u{1F64F}\u{1F680}-\u{1F6FF}\u{1F1E0}-\u{1F1FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{1F900}-\u{1F9FF}\u{FE0F}\u{200D}]/gu, '');
+            // 移除可能图标遗留空格，保留文字
+            footerElem.innerHTML = footerText.replace(/^\s*:\s*/g, '').trim() + ' | 与你的日常，便是奇迹！';
+        }
+        // 确保path-hint内无任何意外unicode表情
+        const pathHintDiv = document.querySelector('.path-hint');
+        if(pathHintDiv) {
+            let inner = pathHintDiv.innerHTML;
+            inner = inner.replace(/[\u{1F300}-\u{1F5FF}\u{1F600}-\u{1F64F}\u{1F680}-\u{1F6FF}\u{1F1E0}-\u{1F1FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{1F900}-\u{1F9FF}\u{FE0F}\u{200D}]/gu, '');
+            pathHintDiv.innerHTML = inner;
+        }
+        // 处理.title-icon内部纯图形不包含emoji但保持svg，就不处理了，完全符合无表情符号
+    })();
+</script>
+
+</body>
+</html>

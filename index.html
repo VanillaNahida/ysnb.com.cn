@@ -1,0 +1,1573 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link id="icon" rel="icon" href="./favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>原神牛逼 | ysnb.com.cn</title>
+    <style>
+        @font-face {
+            font-family: "zh-cn-ys";
+            src: url("https://webstatic.mihoyo.com/common/clgm-static/ys/fonts/zh-cn.ttf") format("truetype");
+            font-display: swap;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "zh-cn-ys", sans-serif;
+        }
+
+        body {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            font-family: "zh-cn-ys", -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://img.dkdun.cn/v1/2026/17/09f88b4b97cff02d.jpg') no-repeat center center;
+            background-size: cover;
+            transition: filter 0.3s ease;
+        }
+
+        .background.blur {
+            filter: blur(15px) brightness(0.4);
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        .overlay.hidden {
+            display: none;
+        }
+
+        .modal {
+            background: #fff;
+            border-radius: 16px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .modal h2 {
+            font-size: 22px;
+            color: #333;
+            margin-bottom: 12px;
+        }
+
+        .modal p {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 24px;
+            line-height: 1.6;
+        }
+
+        #overlay4 .modal p {
+            font-size: 13px;
+            margin-bottom: 6px;
+        }
+
+        .modal .icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 12px 32px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .btn:hover {
+            opacity: 0.85;
+        }
+
+        .btn-confirm {
+            background: #4CAF50;
+            color: #fff;
+        }
+
+        .btn-cancel {
+            background: #f44336;
+            color: #fff;
+        }
+
+        .btn-submit {
+            background: #2196F3;
+            color: #fff;
+            margin-top: 20px;
+        }
+
+        .date-picker {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0 10px;
+        }
+
+        .date-picker select,
+        .date-picker .day-box {
+            padding: 10px 14px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.2s;
+            min-width: 80px;
+        }
+
+        .date-picker select:hover,
+        .date-picker .day-box:hover {
+            border-color: #999;
+        }
+
+        .date-picker select {
+            background: #fff;
+            appearance: auto;
+        }
+
+        .date-picker .day-box {
+            background: #fff;
+            user-select: none;
+            font-variant-numeric: tabular-nums;
+            position: relative;
+        }
+
+        .date-picker .day-box.running {
+            border-color: #4CAF50;
+            background: #f0fdf0;
+        }
+
+        .date-picker .day-box.paused {
+            border-color: #FF9800;
+            background: #fff8e1;
+        }
+
+        .date-picker .sep {
+            font-size: 18px;
+            color: #999;
+        }
+
+        .hint {
+            font-size: 13px;
+            color: #999;
+            margin-top: 8px;
+        }
+
+        /* 人机验证样式 */
+        .captcha-row {
+            display: flex;
+            gap: 6px;
+            justify-content: center;
+            margin: 12px 0;
+        }
+
+        .captcha-box {
+            width: 44px;
+            height: 52px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            background: #fff;
+            user-select: none;
+            transition: border-color 0.2s, background 0.2s;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .captcha-box.target {
+            border-color: #673AB7;
+            background: #f3e5ff;
+            color: #673AB7;
+        }
+
+        .captcha-box.jumping {
+            border-color: #FF9800;
+            background: #fff8e1;
+            cursor: pointer;
+        }
+
+        .captcha-box.jumping:hover {
+            border-color: #E65100;
+        }
+
+        .captcha-box.frozen {
+            border-color: #4CAF50;
+            background: #e8f5e9;
+            cursor: default;
+        }
+
+        .captcha-label {
+            font-size: 13px;
+            color: #999;
+            margin-bottom: 4px;
+        }
+
+        .error-count {
+            font-size: 14px;
+            color: #f44336;
+            margin-top: 8px;
+            min-height: 20px;
+        }
+
+        .surrender-btn {
+            background: #9E9E9E;
+            color: #fff;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .surrender-btn.show {
+            display: inline-block;
+        }
+
+        /* UID验证样式 */
+        .uid-slider-wrap {
+            margin: 20px 0 10px;
+        }
+
+        .uid-slider {
+            width: 100%;
+            -webkit-appearance: none;
+            appearance: none;
+            height: 8px;
+            background: linear-gradient(to right, #e0e0e0, #4CAF50);
+            border-radius: 4px;
+            outline: none;
+        }
+
+        .uid-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #2196F3;
+            cursor: pointer;
+            border: 2px solid #fff;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+
+        .uid-slider::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #2196F3;
+            cursor: pointer;
+            border: 2px solid #fff;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+
+        .uid-input {
+            width: 200px;
+            padding: 10px 14px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 18px;
+            text-align: center;
+            background: #f9f9f9;
+            color: #333;
+            margin-top: 10px;
+            font-variant-numeric: tabular-nums;
+            letter-spacing: 2px;
+        }
+
+        .player-info {
+            margin: 16px 0;
+            padding: 16px;
+            background: #f5f5f5;
+            border-radius: 12px;
+            text-align: left;
+            display: none;
+        }
+
+        .player-info.show {
+            display: block;
+        }
+
+        .player-info .row {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            font-size: 14px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .player-info .row:last-child {
+            border-bottom: none;
+        }
+
+        .player-info .label {
+            color: #999;
+        }
+
+        .player-info .value {
+            color: #333;
+            font-weight: bold;
+        }
+
+        .loading-text {
+            font-size: 14px;
+            color: #999;
+            margin: 10px 0;
+            display: none;
+        }
+
+        .loading-text.show {
+            display: block;
+        }
+
+        .load-hint {
+            font-size: 13px;
+            color: #FF9800;
+            margin: 6px 0;
+            display: none;
+        }
+
+        .load-hint.show {
+            display: block;
+        }
+
+        .uid-error {
+            font-size: 14px;
+            color: #f44336;
+            margin-top: 8px;
+            display: none;
+        }
+
+        .uid-error.show {
+            display: block;
+        }
+
+        .uid-ok-btn {
+            display: none;
+        }
+
+        .uid-ok-btn.show {
+            display: inline-block;
+        }
+
+        .overlay4-buttons .btn {
+            min-width: 120px;
+            margin-top: 0;
+        }
+
+        /* 主页按钮组 */
+        .main-buttons {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 5;
+        }
+
+        .main-buttons.show {
+            display: flex;
+        }
+
+        .main-buttons-bg {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(4px);
+            border-radius: 20px;
+            padding: 50px 60px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-big {
+            padding: 16px 50px;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: transform 0.2s, opacity 0.2s;
+            width: 280px;
+            font-family: inherit;
+        }
+
+        .btn-big:hover {
+            transform: scale(1.05);
+            opacity: 0.9;
+        }
+
+        .btn-big:nth-child(2) {
+            background: #4CAF50;
+            color: #fff;
+        }
+
+        .btn-big:nth-child(3) {
+            background: #FF9800;
+            color: #fff;
+        }
+
+        .btn-big:nth-child(4) {
+            background: #f44336;
+            color: #fff;
+        }
+
+        .btn-big:nth-child(5) {
+            background: #2196F3;
+            color: #fff;
+        }
+
+        .btn-big:nth-child(6) {
+            background: #9C27B0;
+            color: #fff;
+        }
+
+        .btn-big:nth-child(7) {
+            background: #00BCD4;
+            color: #fff;
+        }
+
+        .btn-big:nth-child(8) {
+            background: #E91E63;
+            color: #fff;
+        }
+
+        .btn-big:nth-child(9) {
+            background: #FF5722;
+            color: #fff;
+        }
+
+        .footer-text {
+            color: #666;
+            font-size: 14px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        /* 自定义弹窗 */
+        .custom-modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .custom-modal-overlay.hidden { display: none; }
+        .custom-modal-box .hidden { display: none; }
+        .custom-modal-box {
+            background: #fff;
+            border-radius: 16px;
+            padding: 28px 32px 20px;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            text-align: center;
+            animation: modalIn 0.2s ease;
+        }
+        @keyframes modalIn {
+            from { transform: scale(0.85); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        .custom-modal-box p {
+            margin: 0 0 20px;
+            font-size: 16px;
+            color: #333;
+            white-space: pre-line;
+            line-height: 1.6;
+        }
+        .custom-modal-box input[type="text"] {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 15px;
+            margin-bottom: 18px;
+            box-sizing: border-box;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .custom-modal-box input[type="text"]:focus {
+            border-color: #2196F3;
+        }
+        .custom-modal-btns {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+        .custom-modal-btns button {
+            padding: 10px 28px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .custom-modal-btns button:hover { opacity: 0.85; }
+        .custom-modal-btns .modal-btn-primary {
+            background: #2196F3;
+            color: #fff;
+        }
+        .custom-modal-btns .modal-btn-cancel {
+            background: #eee;
+            color: #555;
+        }
+
+        .modal-player-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 16px;
+            text-align: left;
+            font-size: 14px;
+        }
+        .modal-player-table tr {
+            border-bottom: 1px solid #eee;
+        }
+        .modal-player-table tr:last-child {
+            border-bottom: none;
+        }
+        .modal-player-table td {
+            padding: 8px 6px;
+        }
+        .modal-player-table .label {
+            color: #999;
+            white-space: nowrap;
+            width: 30%;
+        }
+        .modal-player-table .value {
+            color: #333;
+            font-weight: bold;
+        }
+        .modal-result-pass {
+            color: #4CAF50;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .modal-result-fail {
+            color: #f44336;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        /* 全屏视频播放 */
+        .video-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .video-overlay.hidden {
+            display: none;
+        }
+
+        .video-player {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .video-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 10px 24px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.6);
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            z-index: 101;
+        }
+
+        .video-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* 底部备案号 */
+        .custom-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            padding: 16px 20px;
+            z-index: 999;
+            pointer-events: none;
+        }
+
+        .custom-footer .link {
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            font-size: 13px;
+            position: relative;
+            padding: 4px 8px;
+            transition: all 0.3s ease;
+            display: inline-block;
+            pointer-events: auto;
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .custom-footer .link:hover {
+            color: #A0B664;
+            transform: translateY(-2px);
+        }
+
+        .custom-footer .link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 50%;
+            background-color: #A0B664;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .custom-footer .link:hover::after {
+            width: 80%;
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 600px) {
+            #overlay3 .modal {
+                padding: 24px 16px;
+                max-width: 94%;
+            }
+            #overlay3 .modal p {
+                margin-bottom: 10px;
+                font-size: 14px;
+            }
+            #overlay3 .modal h2 {
+                margin-bottom: 6px;
+                font-size: 18px;
+            }
+            #overlay3 .modal .icon {
+                font-size: 32px;
+                margin-bottom: 6px;
+            }
+            #overlay3 .captcha-box {
+                width: 36px;
+                height: 42px;
+                font-size: 18px;
+            }
+            #overlay3 .captcha-row {
+                gap: 4px;
+            }
+            #overlay3 .captcha-label {
+                margin-bottom: 2px;
+            }
+            #overlay3 .btn-submit {
+                margin-top: 8px;
+                padding: 10px 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="background blur" id="bg"></div>
+
+    <!-- 第一层弹窗：是否年满十八岁 -->
+    <div class="overlay" id="overlay1">
+        <div class="modal">
+            <div class="icon">&#x26A0;&#xFE0F;</div>
+            <h2>年龄验证</h2>
+            <p>你是否年满十八岁？<br>访问本网站需确认你已成年。</p>
+            <div class="buttons">
+                <button class="btn btn-confirm" onclick="showDatePicker()">确认</button>
+                <button class="btn btn-cancel" onclick="handleCancel()">取消</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 第二层弹窗：出生日期选择 -->
+    <div class="overlay hidden" id="overlay2">
+        <div class="modal">
+            <div class="icon">&#x1F4C5;</div>
+            <h2>请选择你的出生日期</h2>
+            <p>验证通过后方可访问网站</p>
+            <div class="date-picker">
+                <select id="yearSelect"></select>
+                <span class="sep">-</span>
+                <select id="monthSelect"></select>
+                <span class="sep">-</span>
+                <div class="day-box running" id="dayBox">0</div>
+            </div>
+            <p class="hint">看您手气选月份，过程纯随机&#x1F913;</p>
+            <p class="hint" id="hintText">"日"也同理，点击暂停滚动，再次点击继续&#x1F913;</p>
+            <div class="buttons">
+                <button class="btn btn-submit" onclick="submitDate()">确定</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 第三层弹窗：人机验证 -->
+    <div class="overlay hidden" id="overlay3">
+        <div class="modal">
+            <div class="icon">&#x1F916;</div>
+            <h2>人机验证</h2>
+            <p>检测到您可能是机器人，请完成下面的验证</p>
+
+            <div class="captcha-label">上方目标数字：</div>
+            <div class="captcha-row" id="targetRow"></div>
+
+            <div class="captcha-label" style="margin-top:8px;">请点击下方跳动的数字来完成验证：</div>
+            <div class="captcha-row" id="jumpRow"></div>
+
+            <div class="error-count" id="errorCount"></div>
+
+            <div class="buttons">
+                <button class="btn btn-submit" onclick="submitCaptcha()">确认</button>
+            </div>
+            <button class="btn surrender-btn" id="surrenderBtn" onclick="surrender()">🏳️我没招了，我投降</button>
+        </div>
+    </div>
+
+    <!-- 第四层弹窗：UID验证 -->
+    <div class="overlay hidden" id="overlay4">
+        <div class="modal">
+            <div class="icon" id="uidIcon">&#x1F3AE;</div>
+            <h2>资深玩家验证</h2>
+            <p>检测到您可能不是原神资深玩家，请滑动下面滚动条选择您的UID</p>
+            <p>需要原神等级 60 级且成就数大于 900 即可过关。</p>
+            <p>已接入Enka、Minigg、米游社API（米游社UID状态缓存两周）</p>
+            <p>都查询失败的话可能是网站太火爆了，请稍后多点几次再试。或者来Q群 1064345563 询问作弊方法……嘿嘿！</p>
+            <p>(小声bb：其实你输入水繻的UID：300000000 也是可以通关的，毕竟我后端做了2周的缓存，非常的快！)</p>
+
+            <div class="uid-slider-wrap">
+                <input type="range" class="uid-slider" id="uidSlider" min="100000000" max="600000000" value="100000000">
+            </div>
+            <input type="text" class="uid-input" id="uidInput" readonly value="100000000">
+
+            <div class="loading-text" id="loadingText">正在查询玩家信息...</div>
+            <div class="load-hint" id="fallbackHint"></div>
+            <div class="uid-error" id="uidError"></div>
+
+            <div class="buttons overlay4-buttons">
+                <button class="btn btn-submit" onclick="queryUID()">查询</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 第五层弹窗：祝贺 -->
+    <div class="overlay hidden" id="overlay5">
+        <div class="modal">
+            <div class="icon">&#x1F389;</div>
+            <h2>恭喜你！</h2>
+            <p>你已经证明你是原神资深玩家了，现在你可以自由开始探索了！</p>
+            <div class="buttons">
+                <button class="btn btn-confirm" onclick="closeCongrats()">开始探索</button>
+                <button class="btn btn-confirm" onclick="goYuanShen()">原神牛逼！</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部备案号 -->
+    <footer class="custom-footer" id="siteFooter">
+        <a href="https://xcnahida.cn" target="_blank" class="link">
+           2026 ysnb.com.cn 版权所有 | 点击跳转到香草的日记
+        </a>
+    </footer>
+
+    <!-- 全屏视频播放 -->
+    <div class="video-overlay hidden" id="videoOverlay">
+        <video id="videoPlayer" class="video-player" preload="none" muted>
+            <source src="https://vdse.bdstatic.com/192d9a98d782d9c74c96f09db9378d93.mp4" type="video/mp4">
+        </video>
+        <button class="video-close" onclick="closeVideo()">X 关闭</button>
+    </div>
+
+    <!-- 主页按钮组 -->
+    <div class="main-buttons" id="mainButtons">
+        <div class="main-buttons-bg">
+            <p class="footer-text">本网站由<a href="https://www.bt.cn/" target="_blank" style="color: #2196F3;">宝塔AI建站</a> + 香草的鬼点子生成</p>
+            <!-- <p class="footer-text">请支持<a href="https://astrbot.app/" target="_blank" style="color: #2196F3;"></a>AstrBot</a>谢谢喵！</p> -->
+            <button class="btn btn-big" onclick="installYuanShen()">一键安装原神</button>
+            <button class="btn btn-big" onclick="window.open('https://oig.mihoyo.com/ys/', '_blank')">一键启动原神</button>
+            <button class="btn btn-big" onclick="hotVideos()">&#x1F51E;3D区热门大片&#x1F51E;</button>
+            <button class="btn btn-big" onclick="goRival()">去友商那里证明原神牛逼！</button>
+            <button class="btn btn-big" onclick="window.open('https://xcnahida.cn/contact', '_blank')">加入我的QQ群</button>
+            <button class="btn btn-big" onclick="window.open('https://game.xcnahida.cn/', '_blank')">玩会游戏！（包含张雪峰快跑带排行榜功能）</button>
+            <p class="footer-text">提示：在网站链接后面添加 /?skip 可自动跳过认证，更多逃课方法可加Q群或者把这个页面丢给AI了解</p>
+        </div>
+    </div>
+
+    <!-- 自定义弹窗容器 -->
+    <div class="custom-modal-overlay hidden" id="customModalOverlay">
+        <div class="custom-modal-box" id="customModalBox">
+            <p id="customModalMsg"></p>
+            <input type="text" id="customModalInput" class="hidden" />
+            <div class="custom-modal-btns" id="customModalBtns"></div>
+        </div>
+    </div>
+
+    <script>
+        // ========== 自定义弹窗 ==========
+        // URL参数解析：/?skip 路由直接跳过所有验证
+        // 访问 https://ysnb.com.cn/?skip
+        (function () {
+            if (window.location.search.indexOf('skip') !== -1) {
+                document.addEventListener('DOMContentLoaded', function () {
+                    skip();
+                });
+            }
+        })();
+
+        var _modalCallback = null;
+
+        function _showModal(msg, inputShow, buttons) {
+            var overlay = document.getElementById('customModalOverlay');
+            var msgEl = document.getElementById('customModalMsg');
+            var inputEl = document.getElementById('customModalInput');
+            var btnsEl = document.getElementById('customModalBtns');
+
+            msgEl.textContent = msg;
+            if (inputShow) {
+                inputEl.classList.remove('hidden');
+                inputEl.value = '';
+            } else {
+                inputEl.classList.add('hidden');
+            }
+            btnsEl.innerHTML = '';
+            buttons.forEach(function (b) {
+                var btn = document.createElement('button');
+                btn.textContent = b.label;
+                btn.className = b.primary ? 'modal-btn-primary' : 'modal-btn-cancel';
+                btn.onclick = function () {
+                    overlay.classList.add('hidden');
+                    if (b.callback) b.callback(inputShow ? inputEl.value : undefined);
+                };
+                btnsEl.appendChild(btn);
+            });
+            overlay.classList.remove('hidden');
+            if (inputShow) setTimeout(function () { inputEl.focus(); }, 100);
+        }
+
+        function customAlert(msg, cb) {
+            _showModal(msg, false, [
+                { label: '确定', primary: true, callback: cb || function () {} }
+            ]);
+        }
+
+        function customConfirm(msg, onOk, onCancel) {
+            _showModal(msg, false, [
+                { label: '取消', primary: false, callback: onCancel || function () {} },
+                { label: '确定', primary: true, callback: onOk || function () {} }
+            ]);
+        }
+
+        function customPrompt(msg, onSubmit) {
+            _showModal(msg, true, [
+                { label: '取消', primary: false, callback: function () { onSubmit(null); } },
+                { label: '确定', primary: true, callback: function (val) { onSubmit(val); } }
+            ]);
+        }
+
+        // HTML内容弹窗（支持表格等富文本）
+        function _showModalHtml(html, buttons) {
+            var overlay = document.getElementById('customModalOverlay');
+            var msgEl = document.getElementById('customModalMsg');
+            var inputEl = document.getElementById('customModalInput');
+            var btnsEl = document.getElementById('customModalBtns');
+
+            msgEl.innerHTML = html;
+            inputEl.classList.add('hidden');
+            btnsEl.innerHTML = '';
+            buttons.forEach(function (b) {
+                var btn = document.createElement('button');
+                btn.textContent = b.label;
+                btn.className = b.primary ? 'modal-btn-primary' : 'modal-btn-cancel';
+                btn.onclick = function () {
+                    overlay.classList.add('hidden');
+                    if (b.callback) b.callback();
+                };
+                btnsEl.appendChild(btn);
+            });
+            overlay.classList.remove('hidden');
+        }
+
+        function customConfirmHtml(html, onOk, onCancel) {
+            _showModalHtml(html, [
+                { label: '取消', primary: false, callback: onCancel || function () {} },
+                { label: '确定', primary: true, callback: onOk || function () {} }
+            ]);
+        }
+
+        function customAlertHtml(html, cb) {
+            _showModalHtml(html, [
+                { label: '确定', primary: true, callback: cb || function () {} }
+            ]);
+        }
+
+        // ========== 年龄验证相关 ==========
+
+        // 加载外部 JSON 配置
+        loadUnderageVideos();
+
+        // 初始化年份下拉框 1000~3000
+        (function initYearSelect() {
+            var sel = document.getElementById('yearSelect');
+            for (var y = 1000; y <= 3000; y++) {
+                var opt = document.createElement('option');
+                opt.value = y;
+                opt.textContent = y + '年';
+                sel.appendChild(opt);
+            }
+        })();
+
+        // 月份：点击后随机 0~24
+        (function initMonthSelect() {
+            var sel = document.getElementById('monthSelect');
+            var placeholder = document.createElement('option');
+            placeholder.textContent = '选择';
+            placeholder.disabled = true;
+            placeholder.selected = true;
+            sel.appendChild(placeholder);
+
+            sel.addEventListener('mousedown', function (e) {
+                var r = Math.floor(Math.random() * 25); // 0~24
+                sel.innerHTML = '';
+                var opt = document.createElement('option');
+                opt.value = r;
+                opt.textContent = r + '月';
+                opt.selected = true;
+                sel.appendChild(opt);
+            });
+        })();
+
+        // 日期滚动
+        var dayValue = 0;
+        var dayRunning = true;
+        var dayTimer = null;
+
+        function startDayRolling() {
+            if (dayTimer) clearInterval(dayTimer);
+            dayTimer = setInterval(function () {
+                dayValue = Math.floor(Math.random() * 101);
+                document.getElementById('dayBox').textContent = dayValue;
+            }, 100);
+        }
+
+        function stopDayRolling() {
+            if (dayTimer) {
+                clearInterval(dayTimer);
+                dayTimer = null;
+            }
+        }
+
+        document.getElementById('dayBox').addEventListener('click', function () {
+            var box = document.getElementById('dayBox');
+            if (dayRunning) {
+                stopDayRolling();
+                dayRunning = false;
+                box.classList.remove('running');
+                box.classList.add('paused');
+                document.getElementById('hintText').textContent = '已暂停，再次点击继续滚动';
+            } else {
+                startDayRolling();
+                dayRunning = true;
+                box.classList.remove('paused');
+                box.classList.add('running');
+                document.getElementById('hintText').textContent = '点击"日"暂停滚动，再次点击继续';
+            }
+        });
+
+        function showDatePicker() {
+            document.getElementById('overlay1').classList.add('hidden');
+            document.getElementById('overlay2').classList.remove('hidden');
+            startDayRolling();
+        }
+
+        // 未满十八岁跳转视频列表（从外部 JSON 加载）
+        var underageVideos = [];
+
+        function loadUnderageVideos() {
+            return fetch('video-playlist.json')
+                .then(function (resp) {
+                    if (!resp.ok) throw new Error('Failed to load videos');
+                    return resp.json();
+                })
+                .then(function (data) {
+                    underageVideos = data;
+                })
+                .catch(function () {
+                    // 加载失败时使用默认链接
+                    underageVideos = [
+                        'https://www.bilibili.com/video/BV1dgR9B2E1S',
+                        'https://www.bilibili.com/video/BV1YjLw6PEHx',
+                        'https://www.bilibili.com/video/BV1hWVA6hEGM'
+                    ];
+                });
+        }
+
+        function redirectUnderage() {
+            var url = underageVideos[Math.floor(Math.random() * underageVideos.length)];
+            window.location.href = url;
+        }
+
+        function handleCancel() {
+            redirectUnderage();
+        }
+
+        function resetAll() {
+            document.getElementById('yearSelect').selectedIndex = 0;
+            var sel = document.getElementById('monthSelect');
+            sel.innerHTML = '';
+            var placeholder = document.createElement('option');
+            placeholder.textContent = '选择';
+            placeholder.disabled = true;
+            placeholder.selected = true;
+            sel.appendChild(placeholder);
+            stopDayRolling();
+            dayValue = 0;
+            document.getElementById('dayBox').textContent = '0';
+            var box = document.getElementById('dayBox');
+            box.classList.remove('paused');
+            box.classList.add('running');
+            dayRunning = true;
+            startDayRolling();
+            document.getElementById('hintText').textContent = '点击"日"暂停滚动，再次点击继续';
+        }
+
+        function submitDate() {
+            stopDayRolling();
+
+            var year = parseInt(document.getElementById('yearSelect').value);
+            var month = parseInt(document.getElementById('monthSelect').value);
+            var day = parseInt(document.getElementById('dayBox').textContent);
+
+            if (isNaN(month)) {
+                var r = Math.floor(Math.random() * 25);
+                var sel = document.getElementById('monthSelect');
+                sel.innerHTML = '';
+                var opt = document.createElement('option');
+                opt.value = r;
+                opt.textContent = r + '月';
+                opt.selected = true;
+                sel.appendChild(opt);
+                month = r;
+                startDayRolling();
+                return;
+            } else if (month < 1 || month > 12) {
+                customAlert('月份 ' + month + ' 不合法！请重新选择。', function () { resetAll(); });
+                return;
+            }
+
+            if (day < 1 || day > 31) {
+                customAlert('日期 ' + day + ' 不合法！请重新选择。', function () { resetAll(); });
+                return;
+            }
+
+            var birth = new Date(year, month - 1, day);
+            if (birth.getFullYear() !== year || birth.getMonth() !== month - 1 || birth.getDate() !== day) {
+                customAlert(year + '年' + month + '月' + day + '日 不符合客观事实，请重新选择！', function () { resetAll(); });
+                return;
+            }
+
+            var today = new Date();
+            var age = today.getFullYear() - birth.getFullYear();
+            var mDiff = today.getMonth() - birth.getMonth();
+            if (mDiff < 0 || (mDiff === 0 && today.getDate() < birth.getDate())) {
+                age--;
+            }
+
+            if (age < 0) {
+                customAlert('你活在未来吗？年龄不可以是负数', function () { resetAll(); });
+                return;
+            }
+
+            if (age > 100) {
+                customAlert('您都' + age + '岁了，您老人家还看\uD83D\uDD1E啊？', function () { resetAll(); });
+                return;
+            }
+
+            if (age >= 18) {
+                document.getElementById('overlay2').classList.add('hidden');
+                captchaErrorCount = 0;
+                document.getElementById('surrenderBtn').classList.remove('show');
+                initCaptcha();
+                document.getElementById('overlay3').classList.remove('hidden');
+            } else {
+                redirectUnderage();
+            }
+        }
+
+        // ========== 人机验证相关 ==========
+
+        var captchaTarget = [];
+        var captchaFrozen = [];
+        var captchaFreezeState = [];
+        var captchaJumpTimers = [];
+        var captchaErrorCount = 0;
+
+        function initCaptcha() {
+            captchaTarget = [];
+            captchaFrozen = [];
+            captchaFreezeState = [];
+            captchaJumpTimers = [];
+
+            var targetRow = document.getElementById('targetRow');
+            var jumpRow = document.getElementById('jumpRow');
+            targetRow.innerHTML = '';
+            jumpRow.innerHTML = '';
+
+            for (var i = 0; i < 6; i++) {
+                var t = Math.floor(Math.random() * 10);
+                captchaTarget.push(t);
+                captchaFrozen.push(0);
+                captchaFreezeState.push(false);
+
+                var targetBox = document.createElement('div');
+                targetBox.className = 'captcha-box target';
+                targetBox.textContent = t;
+                targetRow.appendChild(targetBox);
+
+                var jumpBox = document.createElement('div');
+                jumpBox.className = 'captcha-box jumping';
+                jumpBox.id = 'jumpBox' + i;
+                jumpBox.textContent = Math.floor(Math.random() * 10);
+                jumpBox.dataset.index = i;
+                jumpBox.addEventListener('click', function () {
+                    toggleJumpBox(parseInt(this.dataset.index));
+                });
+                jumpRow.appendChild(jumpBox);
+
+                captchaJumpTimers.push(setInterval((function (idx) {
+                    return function () {
+                        if (!captchaFreezeState[idx]) {
+                            var box = document.getElementById('jumpBox' + idx);
+                            if (box) box.textContent = Math.floor(Math.random() * 10);
+                        }
+                    };
+                })(i), 100));
+            }
+        }
+
+        function toggleJumpBox(index) {
+            var box = document.getElementById('jumpBox' + index);
+            if (captchaFreezeState[index]) {
+                captchaFreezeState[index] = false;
+                box.classList.remove('frozen');
+                box.classList.add('jumping');
+                captchaJumpTimers[index] = setInterval(function () {
+                    if (!captchaFreezeState[index]) {
+                        box.textContent = Math.floor(Math.random() * 10);
+                    }
+                }, 100);
+            } else {
+                captchaFreezeState[index] = true;
+                captchaFrozen[index] = parseInt(box.textContent);
+                box.classList.remove('jumping');
+                box.classList.add('frozen');
+                if (captchaJumpTimers[index]) {
+                    clearInterval(captchaJumpTimers[index]);
+                    captchaJumpTimers[index] = null;
+                }
+            }
+        }
+
+        function stopAllJumping() {
+            for (var i = 0; i < captchaJumpTimers.length; i++) {
+                if (captchaJumpTimers[i]) {
+                    clearInterval(captchaJumpTimers[i]);
+                    captchaJumpTimers[i] = null;
+                }
+            }
+        }
+
+        function resetCaptcha() {
+            stopAllJumping();
+            initCaptcha();
+        }
+
+        function submitCaptcha() {
+            for (var i = 0; i < 6; i++) {
+                if (!captchaFreezeState[i]) {
+                    customAlert('请先点击所有6个跳动数字完成选择！');
+                    return;
+                }
+            }
+
+            var allMatch = true;
+            for (var i = 0; i < 6; i++) {
+                if (captchaFrozen[i] !== captchaTarget[i]) {
+                    allMatch = false;
+                    break;
+                }
+            }
+
+            if (allMatch) {
+                stopAllJumping();
+                document.getElementById('overlay3').classList.add('hidden');
+                showUIDVerification();
+            } else {
+                captchaErrorCount++;
+
+                if (captchaErrorCount >= 5) {
+                    document.getElementById('surrenderBtn').classList.add('show');
+                }
+
+                customAlert('数字不匹配，请重新选择！', function () { resetCaptcha(); });
+            }
+        }
+
+        function surrender() {
+            customAlert('人机验证：算你识相，这一关就放过你了', function () {
+                stopAllJumping();
+                document.getElementById('overlay3').classList.add('hidden');
+                showUIDVerification();
+            });
+        }
+
+        // ========== UID验证相关 ==========
+        // 作弊命令：document.getElementById('uidInput').value = '你的UID'
+
+        var uidSlider = document.getElementById('uidSlider');
+        var uidInput = document.getElementById('uidInput');
+        var uidIconClickCount = 0;
+
+        document.getElementById('uidIcon').addEventListener('click', function () {
+            uidIconClickCount++;
+            if (uidIconClickCount >= 10) {
+                uidIconClickCount = 0;
+                customPrompt('竟然被你发现了作弊窗口！那我就放你一马吧！\n请输入你的UID（纯数字，最多9位）：\n输入"跳过"可跳过验证', function (customUid) {
+                    if (customUid === '跳过') {
+                        confirmUID();
+                    } else if (customUid !== null && customUid !== '') {
+                        customUid = customUid.replace(/[^0-9]/g, '');
+                        if (customUid.length > 9) {
+                            customUid = customUid.substring(0, 9);
+                        }
+                        if (customUid.length > 0) {
+                            uidSlider.value = customUid;
+                            uidInput.value = customUid;
+                            document.getElementById('uidError').classList.remove('show');
+                        }
+                    }
+                });
+            }
+        });
+
+        uidSlider.addEventListener('input', function () {
+            uidInput.value = this.value;
+            document.getElementById('uidError').classList.remove('show');
+        });
+
+        function showUIDVerification() {
+            // 初始化UID滑块
+            uidSlider.value = 100000000;
+            uidInput.value = 100000000;
+            document.getElementById('uidError').classList.remove('show');
+            document.getElementById('loadingText').classList.remove('show');
+            document.getElementById('overlay4').classList.remove('hidden');
+        }
+
+        function queryUID() {
+            var uid = uidInput.value;
+            var loadingEl = document.getElementById('loadingText');
+            var errorEl = document.getElementById('uidError');
+            var hintEl = document.getElementById('fallbackHint');
+
+            errorEl.classList.remove('show');
+            hintEl.classList.remove('show');
+            loadingEl.classList.add('show');
+
+            var apis = [
+                { url: 'enkaapi.php?uid=' + uid + '&source=mys', name: '米游社API' },
+                { url: 'enkaapi.php?uid=' + uid + '&source=enka', name: 'Enka API' },
+                { url: 'enkaapi.php?uid=' + uid + '&source=microgg', name: 'Microgg API' }
+            ];
+
+            function tryFetch(index) {
+                if (index >= apis.length) {
+                    loadingEl.classList.remove('show');
+                    errorEl.textContent = '查询失败，请检查UID后或者稍后重试，也有可能是网页太火爆了，可以加Q群:1064345563 联系群主修复';
+                    errorEl.classList.add('show');
+                    return;
+                }
+
+                loadingEl.textContent = '正在查询玩家信息...（' + apis[index].name + '）';
+
+                fetch(apis[index].url)
+                .then(function (resp) {
+                    if (resp.status === 429) {
+                        throw { is429: true, message: '上游返回信息：查询太频繁，请稍后再试。（我确信应该是服务器炸了）\n也有可能是网页太火爆了，可以加Q群:1064345563 联系群主修复' };
+                    }
+                    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+                    return resp.json();
+                })
+                .then(function (data) {
+                    loadingEl.classList.remove('show');
+                    hintEl.classList.remove('show');
+
+                    var player = data.playerInfo;
+                    if (!player) {
+                        errorEl.textContent = '未找到该UID的玩家信息';
+                        errorEl.classList.add('show');
+                        return;
+                    }
+
+                    var notSupported = '目标API不支持该信息查询';
+                    var nickname = player.nickname || '-';
+                    var level = player.level || '-';
+                    var signature = (player.signature !== undefined && player.signature !== '') ? player.signature : (player._source === 'mys' ? notSupported : (player.signature || '-'));
+                    var worldLevel = player.worldLevel === -1 ? notSupported : (player.worldLevel !== undefined ? player.worldLevel : '-');
+                    var achievement = player.finishAchievementNum !== undefined ? player.finishAchievementNum : '-';
+
+                    // 检查是否符合要求：冒险等级60 且 成就数大于900
+                    var achievementNum = player.finishAchievementNum || 0;
+                    var html = '<table class="modal-player-table">'
+                        + '<tr><td class="label">玩家昵称</td><td class="value">' + nickname + '</td></tr>'
+                        + '<tr><td class="label">冒险等级</td><td class="value">' + level + '</td></tr>'
+                        + '<tr><td class="label">签名</td><td class="value">' + signature + '</td></tr>'
+                        + '<tr><td class="label">世界等级</td><td class="value">' + worldLevel + '</td></tr>'
+                        + '<tr><td class="label">完成成就数</td><td class="value">' + achievement + '</td></tr>'
+                        + '</table>';
+
+                    if (player.level === 60 && achievementNum > 900) {
+                        html += '<div class="modal-result-pass">符合要求！</div>';
+                        customConfirmHtml(html, function () {
+                            confirmUID();
+                        });
+                    } else {
+                        html += '<div class="modal-result-fail">不符合要求（需要等级60 + 成就数&gt;900）</div>';
+                        customAlertHtml(html);
+                    }
+                })
+                .catch(function (err) {
+                    // 显示回退提示
+                    if (index + 1 < apis.length) {
+                        var reason = err && err.is429 ? '限流' : '失败';
+                        hintEl.textContent = apis[index].name + '查询' + reason + '，自动切换至' + apis[index + 1].name;
+                        hintEl.classList.add('show');
+                        tryFetch(index + 1);
+                    } else {
+                        // 所有 API 都试完了
+                        loadingEl.classList.remove('show');
+                        if (err && err.is429) {
+                            errorEl.textContent = err.message;
+                        } else {
+                            errorEl.textContent = '所有方法查询失败，请检查UID后或者稍后重试，也有可能是网页太火爆了，可以加Q群:1064345563 联系群主修复。';
+                        }
+                        errorEl.classList.add('show');
+                    }
+                });
+            }
+
+            tryFetch(0);
+        }
+
+        function confirmUID() {
+            showCongrats();
+        }
+
+        function showCongrats(skipMode) {
+            document.getElementById('overlay4').classList.add('hidden');
+            document.getElementById('overlay5').classList.remove('hidden');
+            if (skipMode) {
+                document.querySelector('#overlay5 .modal p').textContent = '你通过神秘小参数跳过了认证，现在你可以自由开始探索了！';
+            }
+        }
+
+        function closeCongrats() {
+            document.getElementById('overlay5').classList.add('hidden');
+            document.getElementById('bg').classList.remove('blur');
+            document.getElementById('mainButtons').classList.add('show');
+        }
+
+        function goYuanShen() {
+            var urls = [
+                'https://www.yuanshen.com',
+                'https://ys.mihoyo.com',
+                'https://space.bilibili.com/401742377'
+            ];
+            var url = urls[Math.floor(Math.random() * urls.length)];
+            window.open(url, '_blank');
+        }
+
+        function installYuanShen() {
+            var ua = navigator.userAgent;
+
+            if (ua.indexOf('Mac') !== -1) {
+                customConfirm('你用的是MacOS，暂不支持原神，请问是否跳转到云原神官网？', function () {
+                    window.open('https://ys.mihoyo.com/cloud', '_blank');
+                });
+                return;
+            }
+
+            var url;
+
+            if (ua.indexOf('OpenHarmony') !== -1) {
+                // 纯血鸿蒙
+                url = 'https://appgallery.huawei.com/app/detail?id=com.miHoYo.Yuanshen';
+            } else if (ua.indexOf('Android') !== -1 || ua.indexOf('Adr') !== -1) {
+                // Android
+                url = 'https://ys-api.mihoyo.com/event/download_porter/link/ys_cn/official/android_backup320';
+            } else if (ua.indexOf('iPhone') !== -1 || ua.indexOf('iPad') !== -1 || ua.indexOf('iPod') !== -1) {
+                // iOS
+                url = 'https://ys-api.mihoyo.com/event/download_porter/link/ys_cn/official/ios_default';
+            } else {
+                // 默认Windows
+                url = 'https://ys-api.mihoyo.com/event/download_porter/link/ys_cn/official/pc_backup320';
+            }
+
+            window.open(url, '_blank');
+        }
+
+        var hotVideoClickCount = 0;
+
+        function hotVideos() {
+            var btns = document.querySelectorAll('.btn-big');
+            btns.forEach(function (b) {
+                if (b.textContent.indexOf('3D区') !== -1) {
+                    b.textContent = '\uD83D\uDE013D区热门大骗(多次点击有不同效果哦)\uD83D\uDE01';
+                }
+            });
+            hotVideoClickCount++;
+            if (hotVideoClickCount === 1) {
+                window.open('https://www.bilibili.com/video/BV1GJ411x7h7', '_blank');
+                return;
+            }
+            if (hotVideoClickCount === 2) {
+                window.open('https://www.bilibili.com/video/BV1dyXqBaEE5/', '_blank');
+                return;
+            }
+            fetch('hotvideo.json')
+                .then(function (resp) {
+                    if (!resp.ok) throw new Error('Failed to load');
+                    return resp.json();
+                })
+                .then(function (urls) {
+                    var url = urls[Math.floor(Math.random() * urls.length)];
+                    window.open(url, '_blank');
+                })
+                .catch(function () {
+                    window.open('https://www.bilibili.com/video/BV1dyXqBaEE5', '_blank');
+                });
+        }
+
+        function closeVideo() {
+            document.getElementById('videoOverlay').classList.add('hidden');
+            var video = document.getElementById('videoPlayer');
+            video.pause();
+            if (document.fullscreenElement) {
+                document.exitFullscreen();
+            } else if (document.webkitFullscreenElement) {
+                document.webkitExitFullscreen();
+            } else if (document.msFullscreenElement) {
+                document.msExitFullscreen();
+            }
+        }
+
+        // 监听全屏退出事件，自动隐藏视频遮罩
+        document.addEventListener('fullscreenchange', function () {
+            if (!document.fullscreenElement) {
+                document.getElementById('videoOverlay').classList.add('hidden');
+                var video = document.getElementById('videoPlayer');
+                video.pause();
+            }
+        });
+        document.addEventListener('webkitfullscreenchange', function () {
+            if (!document.webkitFullscreenElement) {
+                document.getElementById('videoOverlay').classList.add('hidden');
+                var video = document.getElementById('videoPlayer');
+                video.pause();
+            }
+        });
+        document.addEventListener('msfullscreenchange', function () {
+            if (!document.msFullscreenElement) {
+                document.getElementById('videoOverlay').classList.add('hidden');
+                var video = document.getElementById('videoPlayer');
+                video.pause();
+            }
+        });
+
+        function goRival() {
+            fetch('二游列表.json')
+                .then(function (resp) {
+                    if (!resp.ok) throw new Error('Failed to load');
+                    return resp.json();
+                })
+                .then(function (games) {
+                    var game = games[Math.floor(Math.random() * games.length)];
+                    customAlert('即将跳转到：' + game.name, function () {
+                        window.open(game.official_site_cn, '_blank');
+                    });
+                })
+                .catch(function () {
+                    window.open('https://mc.kurogames.com', '_blank');
+                });
+        }
+
+        // 奇妙小函数，用来一键跳过所有验证
+        function skip() {
+            var overlays = document.querySelectorAll('.overlay');
+            for (var i = 0; i < overlays.length; i++) {
+                overlays[i].classList.add('hidden');
+            }
+            stopAllJumping();
+            stopDayRolling();
+            document.getElementById('bg').classList.remove('blur');
+            document.getElementById('mainButtons').classList.add('show');
+            showCongrats(true);
+            console.log('这个后门都被你发现了？');
+        }
+    </script>
+
+</body>
+</html>
