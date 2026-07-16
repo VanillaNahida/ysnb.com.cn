@@ -1,2 +1,3 @@
 .htaccess
 .user.ini
+__pycache__/

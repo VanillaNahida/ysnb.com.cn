@@ -26,15 +26,23 @@
             font-family: "zh-cn-ys", -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
 
+        /* 电脑端默认设置 */
         .background {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: url('https://img.dkdun.cn/v1/2026/17/09f88b4b97cff02d.jpg') no-repeat center center;
+            background: url('https://img.dkdun.cn/v1/2026/17/1ac0fa6c484344ee.jpg') no-repeat center center;
             background-size: cover;
             transition: filter 0.3s ease;
+        }
+
+        /* 手机布局 */
+        @media (max-width: 768px) {
+            .background {
+                background-image: url('https://img.dkdun.cn/v1/2026/17/ef07a7c9fcff94f5.jpg');
+            }
         }
 
         .background.blur {
@@ -64,6 +72,9 @@
             padding: 40px;
             max-width: 500px;
             width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
             text-align: center;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             animation: fadeIn 0.3s ease;
@@ -415,15 +426,15 @@
         }
 
         .main-buttons-bg {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(4px);
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(0px);
             border-radius: 20px;
             padding: 50px 60px;
             display: flex;
             flex-direction: column;
             gap: 20px;
             align-items: center;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
         }
 
         .btn-big {
@@ -482,8 +493,18 @@
             color: #fff;
         }
 
+        .btn-big:nth-child(10) {
+            background: #607D8B;
+            color: #fff;
+        }
+
+        .btn-big:nth-child(11) {
+            background: #795548;
+            color: #fff;
+        }
+
         .footer-text {
-            color: #666;
+            color: #000000;
             font-size: 14px;
             text-align: center;
             margin-bottom: 15px;
@@ -507,6 +528,9 @@
             padding: 28px 32px 20px;
             max-width: 400px;
             width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
             box-shadow: 0 8px 32px rgba(0,0,0,0.3);
             text-align: center;
             animation: modalIn 0.2s ease;
@@ -715,7 +739,90 @@
                 margin-top: 8px;
                 padding: 10px 24px;
             }
+
+            #overlay4 .modal {
+                max-height: 90vh;
+                overflow-y: auto;
+                padding: 24px 16px;
+            }
+            #overlay4 .modal p {
+                font-size: 12px;
+                margin-bottom: 4px;
+            }
+            #overlay4 .modal h2 {
+                font-size: 17px;
+                margin-bottom: 6px;
+            }
+            #overlay4 .modal .icon {
+                font-size: 32px;
+                margin-bottom: 4px;
+            }
+            #overlay4 .uid-slider-wrap {
+                margin: 8px 0 4px;
+            }
+            #overlay4 .uid-input {
+                width: 160px;
+                padding: 6px 10px;
+                font-size: 16px;
+                margin-top: 4px;
+            }
+
+            .main-buttons {
+                align-items: flex-start;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            .main-buttons-bg {
+                margin: 20px auto;
+                padding: 30px 24px;
+                gap: 12px;
+            }
+            .main-buttons-bg .btn-big {
+                width: 240px;
+                padding: 12px 30px;
+                font-size: 15px;
+            }
         }
+
+        /* Toast 浮动通知 */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 99999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            pointer-events: none;
+        }
+        .toast {
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-size: 14px;
+            backdrop-filter: blur(8px);
+            animation: toastIn 0.3s ease;
+            pointer-events: auto;
+            text-align: center;
+            max-width: 90vw;
+        }
+        @keyframes toastIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .toast.toast-out {
+            animation: toastOut 0.3s ease forwards;
+        }
+        @keyframes toastOut {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(-20px); }
+        }
+        .toast.toast-success { border-left: 4px solid #4CAF50; }
+        .toast.toast-error { border-left: 4px solid #f44336; }
+        .toast.toast-info { border-left: 4px solid #2196F3; }
     </style>
 </head>
 <body>
@@ -729,8 +836,9 @@
             <h2>年龄验证</h2>
             <p>你是否年满十八岁？<br>访问本网站需确认你已成年。</p>
             <div class="buttons">
-                <button class="btn btn-confirm" onclick="showDatePicker()">确认</button>
-                <button class="btn btn-cancel" onclick="handleCancel()">取消</button>
+                <!-- 故意颠倒顺序 -->
+                <button class="btn btn-confirm" onclick="handleCancel()">取消</button>
+                <button class="btn btn-cancel" onclick="showDatePicker()">确认</button>
             </div>
         </div>
     </div>
@@ -741,6 +849,7 @@
             <div class="icon">&#x1F4C5;</div>
             <h2>请选择你的出生日期</h2>
             <p>验证通过后方可访问网站</p>
+            <p>提示：部分日期有彩蛋效果（目前彩蛋数量：2个）</p>
             <div class="date-picker">
                 <select id="yearSelect"></select>
                 <span class="sep">-</span>
@@ -782,10 +891,10 @@
     <div class="overlay hidden" id="overlay4">
         <div class="modal">
             <div class="icon" id="uidIcon">&#x1F3AE;</div>
-            <h2>资深玩家验证</h2>
+            <h2>资深玩家验证（该页面可上下滑动）</h2>
             <p>检测到您可能不是原神资深玩家，请滑动下面滚动条选择您的UID</p>
             <p>需要原神等级 60 级且成就数大于 900 即可过关。</p>
-            <p>已接入Enka、Minigg、米游社API（米游社UID状态缓存两周）</p>
+            <p>已接入Enka、Minigg、米游社API（米游社UID状态缓存两周，不支持查签名和世界等级）</p>
             <p>都查询失败的话可能是网站太火爆了，请稍后多点几次再试。或者来Q群 1064345563 询问作弊方法……嘿嘿！</p>
             <p>(小声bb：其实你输入水繻的UID：300000000 也是可以通关的，毕竟我后端做了2周的缓存，非常的快！)</p>
 
@@ -843,6 +952,8 @@
             <button class="btn btn-big" onclick="goRival()">去友商那里证明原神牛逼！</button>
             <button class="btn btn-big" onclick="window.open('https://xcnahida.cn/contact', '_blank')">加入我的QQ群</button>
             <button class="btn btn-big" onclick="window.open('https://game.xcnahida.cn/', '_blank')">玩会游戏！（包含张雪峰快跑带排行榜功能）</button>
+            <button class="btn btn-big" onclick="window.open('https://github.com/VanillaNahida/NTE-Custom-BAGEL', '_blank')">（推荐）异环小工具</button>
+            <button class="btn btn-big" onclick="downloadBg()">下载当前背景图</button>
             <p class="footer-text">提示：在网站链接后面添加 /?skip 可自动跳过认证，更多逃课方法可加Q群或者把这个页面丢给AI了解</p>
             <p class="footer-text">GitHub地址：<a href="https://github.com/VanillaNahida/ysnb.com.cn" target="_blank" style="color: #2196F3;">GitHub - VanillaNahida/ysnb.com.cn</a></p>
         </div>
@@ -1057,7 +1168,8 @@
         }
 
         function redirectUnderage() {
-            var url = underageVideos[Math.floor(Math.random() * underageVideos.length)];
+            var item = underageVideos[Math.floor(Math.random() * underageVideos.length)];
+            var url = typeof item === 'string' ? item : item.url;
             window.location.href = url;
         }
 
@@ -1092,6 +1204,47 @@
             var month = parseInt(document.getElementById('monthSelect').value);
             var day = parseInt(document.getElementById('dayBox').textContent);
 
+            // 彩蛋：2077年，优先检查
+            if (year === 2077) {
+                var eggHtml = '<p style="font-size: 20px; font-weight: bold; margin-bottom: 16px;">🎉 你触发了一个彩蛋！🎉</p>'
+                    + '<p style="font-size: 14px; margin-bottom: 12px;">”牛逼啊V“，赛博朋克2077，经典永流传</p>'
+                    + '<audio controls autoplay id="eggAudio" style="width: 100%; border-radius: 8px;">'
+                    + '<source src="./assets/Samuel Kim、Lorien - I Really Want to Stay at Your House.mp3" type="audio/mpeg">'
+                    + '您的浏览器不支持音频播放'
+                    + '</audio>';
+                _showModalHtml(eggHtml, [
+                    { label: '继续', primary: true, callback: function () {
+                        var audio = document.getElementById('eggAudio');
+                        if (audio) audio.pause();
+                        // 关闭彩蛋后继续验证
+                        continueSubmit(year, month, day);
+                    } }
+                ]);
+                return;
+            }
+
+            // 彩蛋：2022年10月27日（纳西妲生日彩蛋），与2077彩蛋互斥
+            if (year === 2022 && month === 10 && day === 27) {
+                var eggHtml = '<p style="font-size: 20px; font-weight: bold; margin-bottom: 16px;">🎉 纳西妲的生日！🎉</p>'
+                    + '<p style="font-size: 14px; margin-bottom: 12px;">"Piax花玲，失眠飞行"</p>'
+                    + '<audio controls autoplay id="eggAudio" style="width: 100%; border-radius: 8px;">'
+                    + '<source src="./assets/【Piax花玲】失眠飞行.mp3" type="audio/mpeg">'
+                    + '您的浏览器不支持音频播放'
+                    + '</audio>';
+                _showModalHtml(eggHtml, [
+                    { label: '继续', primary: true, callback: function () {
+                        var audio = document.getElementById('eggAudio');
+                        if (audio) audio.pause();
+                        continueSubmit(year, month, day);
+                    } }
+                ]);
+                return;
+            }
+
+            continueSubmit(year, month, day);
+        }
+
+        function continueSubmit(year, month, day) {
             if (isNaN(month)) {
                 var r = Math.floor(Math.random() * 25);
                 var sel = document.getElementById('monthSelect');
@@ -1337,7 +1490,7 @@
             function tryFetch(index) {
                 if (index >= apis.length) {
                     loadingEl.classList.remove('show');
-                    errorEl.textContent = '查询失败，请检查UID后或者稍后重试，也有可能是网页太火爆了，可以加Q群:1064345563 联系群主修复';
+                    errorEl.textContent = '查询失败，请检查UID后或者稍后重试，也有可能是网页太火爆了，可以稍后再试或者输入已缓存的UID';
                     errorEl.classList.add('show');
                     return;
                 }
@@ -1347,7 +1500,7 @@
                 fetch(apis[index].url)
                 .then(function (resp) {
                     if (resp.status === 429) {
-                        throw { is429: true, message: '上游返回信息：查询太频繁，请稍后再试。（我确信应该是服务器炸了）\n也有可能是网页太火爆了，可以加Q群:1064345563 联系群主修复' };
+                        throw { is429: true, message: '上游返回信息：查询太频繁，请稍后再试。（我确信应该是服务器炸了）\n网页太火爆了，可以稍后再试或者输入已缓存的UID' };
                     }
                     if (!resp.ok) throw new Error('HTTP ' + resp.status);
                     return resp.json();
@@ -1394,7 +1547,7 @@
                     // 显示回退提示
                     if (index + 1 < apis.length) {
                         var reason = err && err.is429 ? '限流' : '失败';
-                        hintEl.textContent = apis[index].name + '查询' + reason + '，自动切换至' + apis[index + 1].name;
+                        hintEl.textContent = apis[index].name + '查询' + reason + '，自动切换至' + apis[index + 1].name + '查询，请耐心等待……';
                         hintEl.classList.add('show');
                         tryFetch(index + 1);
                     } else {
@@ -1444,8 +1597,15 @@
         function installYuanShen() {
             var ua = navigator.userAgent;
 
+            // iOS/iPadOS 走 AppStore（这些设备 UA 也可能包含 Mac，需优先判断）
+            if (ua.indexOf('iPhone') !== -1 || ua.indexOf('iPad') !== -1 || ua.indexOf('iPod') !== -1) {
+                window.open('https://ys-api.mihoyo.com/event/download_porter/link/ys_cn/official/ios_default', '_blank');
+                return;
+            }
+
+            // 桌面端 Mac
             if (ua.indexOf('Mac') !== -1) {
-                customConfirm('你用的是MacOS，暂不支持原神，请问是否跳转到云原神官网？', function () {
+                customConfirm('你用的是MacOS，暂不支持下载安装原神，请问是否跳转到云原神官网？', function () {
                     window.open('https://ys.mihoyo.com/cloud', '_blank');
                 });
                 return;
@@ -1459,9 +1619,12 @@
             } else if (ua.indexOf('Android') !== -1 || ua.indexOf('Adr') !== -1) {
                 // Android
                 url = 'https://ys-api.mihoyo.com/event/download_porter/link/ys_cn/official/android_backup320';
-            } else if (ua.indexOf('iPhone') !== -1 || ua.indexOf('iPad') !== -1 || ua.indexOf('iPod') !== -1) {
-                // iOS
-                url = 'https://ys-api.mihoyo.com/event/download_porter/link/ys_cn/official/ios_default';
+            } else if (ua.indexOf('Linux') !== -1 && ua.indexOf('Android') === -1) {
+                // Linux 桌面端
+                customConfirm('你使用的貌似是Linux系统，暂不支持下载安装原神，请问是否跳转到云原神官网？', function () {
+                    window.open('https://ys.mihoyo.com/cloud', '_blank');
+                });
+                return;
             } else {
                 // 默认Windows
                 url = 'https://ys-api.mihoyo.com/event/download_porter/link/ys_cn/official/pc_backup320';
@@ -1471,6 +1634,57 @@
         }
 
         var hotVideoClickCount = 0;
+        
+        // Toast 浮动通知
+        function showToast(msg, type) {
+            type = type || 'info';
+            var container = document.getElementById('toastContainer');
+            var toast = document.createElement('div');
+            toast.className = 'toast toast-' + type;
+            toast.textContent = msg;
+            container.appendChild(toast);
+            setTimeout(function () {
+                toast.classList.add('toast-out');
+                setTimeout(function () {
+                    if (toast.parentNode) toast.parentNode.removeChild(toast);
+                }, 300);
+            }, 2500);
+        }
+
+        // 下载背景图
+        function downloadBg() {
+            if (!window.fetch || !window.URL || !window.URL.createObjectURL) {
+                showToast('您的浏览器不支持blob，请更换浏览器后重试', 'error');
+                return;
+            }
+
+            showToast('正在下载背景图，请稍后...', 'info');
+
+            var isMobile = window.innerWidth <= 768;
+            var url = isMobile
+                ? 'https://ysnb.com.cn/assets/background/116063394_p0-Untitled.jpg'
+                : 'https://ysnb.com.cn/assets/background/ysnb_bg_desktop_nahida.png';
+            var filename = isMobile ? 'アビドス高等学校黒見セリカ_116063394_p0.jpg' : 'ysnb_bg_desktop_nahida.png';
+
+            fetch(url)
+                .then(function (resp) {
+                    if (!resp.ok) throw new Error('下载失败');
+                    return resp.blob();
+                })
+                .then(function (blob) {
+                    var a = document.createElement('a');
+                    a.href = URL.createObjectURL(blob);
+                    a.download = filename;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(a.href); // 销毁URL对象
+                    showToast('已发送下载请求，请查看浏览器下载通知。', 'success');
+                })
+                .catch(function () {
+                    showToast('背景图下载失败，请稍后重试', 'error');
+                });
+        }
 
         function hotVideos() {
             var btns = document.querySelectorAll('.btn-big');
@@ -1493,8 +1707,13 @@
                     if (!resp.ok) throw new Error('Failed to load');
                     return resp.json();
                 })
-                .then(function (urls) {
-                    var url = urls[Math.floor(Math.random() * urls.length)];
+                .then(function (items) {
+                    var item = items[Math.floor(Math.random() * items.length)];
+                    var url = typeof item === 'string' ? item : item.url;
+                    var title = typeof item === 'string' ? '' : (item.title || '');
+                    if (title) {
+                        showToast('🎬 ' + title, 'success');
+                    }
                     window.open(url, '_blank');
                 })
                 .catch(function () {
@@ -1538,6 +1757,23 @@
             }
         });
 
+        // 科乐美秘技：上上下下左左右右BA
+        (function () {
+            var konami = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+            var index = 0;
+            document.addEventListener('keydown', function (e) {
+                if (e.key === konami[index]) {
+                    index++;
+                    if (index === konami.length) {
+                        index = 0;
+                        skip();
+                    }
+                } else {
+                    index = 0;
+                }
+            });
+        })();
+
         function goRival() {
             fetch('acg-game-list.json')
                 .then(function (resp) {
@@ -1570,6 +1806,8 @@
             console.log('这个后门都被你发现了？');
         }
     </script>
+    <!-- Toast 浮动通知容器 -->
+    <div class="toast-container" id="toastContainer"></div>
 
 </body>
 </html>
