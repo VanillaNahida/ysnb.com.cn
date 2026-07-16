@@ -33,16 +33,9 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: url('https://img.dkdun.cn/v1/2026/17/1ac0fa6c484344ee.jpg') no-repeat center center;
+            background: #1a1a2e no-repeat center center;
             background-size: cover;
             transition: filter 0.3s ease;
-        }
-
-        /* 手机布局 */
-        @media (max-width: 768px) {
-            .background {
-                background-image: url('https://img.dkdun.cn/v1/2026/17/ef07a7c9fcff94f5.jpg');
-            }
         }
 
         .background.blur {
@@ -870,7 +863,7 @@
         <div class="modal">
             <div class="icon">&#x1F916;</div>
             <h2>人机验证</h2>
-            <p>检测到您可能是机器人，请完成下面的验证</p>
+            <p>检测到您可能是人类，请完成下面的验证</p>
 
             <div class="captcha-label">上方目标数字：</div>
             <div class="captcha-row" id="targetRow"></div>
@@ -969,6 +962,39 @@
     </div>
 
     <script>
+        // ========== 壁纸相关 ==========
+        var wallpaperPc = null;
+        var wallpaperMobile = null;
+
+        function loadWallpapers() {
+            fetch('api/get_wallpaper.php')
+                .then(function (resp) {
+                    if (!resp.ok) throw new Error('Failed to load wallpapers');
+                    return resp.json();
+                })
+                .then(function (data) {
+                    wallpaperPc = data.pc;
+                    wallpaperMobile = data.mobile;
+                    applyWallpaper();
+                })
+                .catch(function () {
+                    // 失败时使用 CSS 中预设的 fallback
+                });
+        }
+
+        function applyWallpaper() {
+            var bg = document.getElementById('bg');
+            var url = window.innerWidth <= 768
+                ? (wallpaperMobile || '')
+                : (wallpaperPc || '');
+            if (url) {
+                bg.style.backgroundImage = 'url("' + url + '")';
+                bg.style.backgroundSize = 'cover';
+                bg.style.backgroundPosition = 'center center';
+                bg.style.backgroundRepeat = 'no-repeat';
+            }
+        }
+
         // ========== 自定义弹窗 ==========
         // URL参数解析：/?skip 路由直接跳过所有验证
         // 访问 https://ysnb.com.cn/?skip
@@ -979,6 +1005,15 @@
                 });
             }
         })();
+
+        // 页面加载时请求壁纸
+        document.addEventListener('DOMContentLoaded', function () {
+            loadWallpapers();
+        });
+        // 窗口尺寸变化时切换 PC/手机壁纸
+        window.addEventListener('resize', function () {
+            applyWallpaper();
+        });
 
         var _modalCallback = null;
 
@@ -1482,9 +1517,9 @@
             loadingEl.classList.add('show');
 
             var apis = [
-                { url: 'enkaapi.php?uid=' + uid + '&source=mys', name: '米游社API' },
-                { url: 'enkaapi.php?uid=' + uid + '&source=enka', name: 'Enka API' },
-                { url: 'enkaapi.php?uid=' + uid + '&source=microgg', name: 'Microgg API' }
+                { url: 'api/enkaapi.php?uid=' + uid + '&source=mys', name: '米游社API' },
+                { url: 'api/enkaapi.php?uid=' + uid + '&source=enka', name: 'Enka API' },
+                { url: 'api/enkaapi.php?uid=' + uid + '&source=microgg', name: 'Microgg API' },
             ];
 
             function tryFetch(index) {
@@ -1658,13 +1693,17 @@
                 return;
             }
 
+            var isMobile = window.innerWidth <= 768;
+            var path = isMobile ? wallpaperMobile : wallpaperPc;
+            if (!path) {
+                showToast('壁纸尚未加载完成，请稍后再试', 'error');
+                return;
+            }
+
             showToast('正在下载背景图，请稍后...', 'info');
 
-            var isMobile = window.innerWidth <= 768;
-            var url = isMobile
-                ? 'https://ysnb.com.cn/assets/background/116063394_p0-Untitled.jpg'
-                : 'https://ysnb.com.cn/assets/background/ysnb_bg_desktop_nahida.png';
-            var filename = isMobile ? 'アビドス高等学校黒見セリカ_116063394_p0.jpg' : 'ysnb_bg_desktop_nahida.png';
+            var url = path;
+            var filename = path.split('/').pop();
 
             fetch(url)
                 .then(function (resp) {
