@@ -842,8 +842,8 @@ body {
     cursor: pointer;
     opacity: 0.4;
     transition: opacity var(--transition);
-    color: rgba(0,0,0);
-    padding: 9px;
+    color: rgba(0,0,0,.5);
+    padding: 6px;
     border-radius: 8px;
     background: rgba(255,255,255,.4);
     backdrop-filter: blur(6px);
@@ -851,6 +851,7 @@ body {
     border: 1px solid rgba(255,255,255,.3);
     line-height: 0
 }
+
 .toggle-main-btn:hover {
     opacity: 1;
     color: var(--c-gold);
