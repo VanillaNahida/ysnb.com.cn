@@ -521,7 +521,7 @@ document.getElementById('uidIcon').addEventListener('click', function () {
                     customUid = customUid.substring(0, 9);
                 }
                 if (customUid.length > 0) {
-                    uidSlider.value = customUid;
+                    uidSlider.value = Math.floor(parseInt(customUid) / 100000);
                     uidInput.value = customUid;
                     document.getElementById('uidError').classList.remove('show');
                 }
@@ -531,14 +531,14 @@ document.getElementById('uidIcon').addEventListener('click', function () {
 });
 
 uidSlider.addEventListener('input', function () {
-    uidInput.value = this.value;
+    uidInput.value = (parseInt(this.value) * 100000).toString();
     document.getElementById('uidError').classList.remove('show');
 });
 
 function showUIDVerification() {
     // 初始化UID滑块
-    uidSlider.value = 100000000;
-    uidInput.value = 100000000;
+    uidSlider.value = 1000;
+    uidInput.value = '100000000';
     document.getElementById('uidError').classList.remove('show');
     document.getElementById('loadingText').classList.remove('show');
     document.getElementById('overlay4').classList.remove('hidden');
@@ -881,4 +881,35 @@ function skip() {
     document.getElementById('mainButtons').classList.add('show');
     showCongrats(true);
     console.log('这个后门都被你发现了？');
+}
+
+// 主按钮显示/隐藏切换（双向图标互换）
+var _btnShow = true;
+var _toggleBtn = document.getElementById('toggleMainBtn');
+var _toggleSvg = _toggleBtn ? _toggleBtn.querySelector('svg') : null;
+var _svgShow = '<path d="M602.83-377.17q50.5-50.5 50.5-122.83t-50.5-122.83q-50.5-50.5-122.83-50.5t-122.83 50.5q-50.5 50.5-50.5 122.83t50.5 122.83q50.5 50.5 122.83 50.5t122.83-50.5ZM401.5-421.5q-32.17-32.17-32.17-78.5t32.17-78.5q32.17-32.17 78.5-32.17t78.5 32.17q32.17 32.17 32.17 78.5t-32.17 78.5q-32.17 32.17-78.5 32.17t-78.5-32.17Zm-186.17 139Q96.67-365 40-500q56.67-135 175.33-217.5Q334-800 480-800t264.67 82.5Q863.33-635 920-500q-56.67 135-175.33 217.5Q626-200 480-200t-264.67-82.5ZM480-500Zm217.5 169.83q99.17-63.5 151.17-169.83-52-106.33-151.17-169.83-99.17-63.5-217.5-63.5t-217.5 63.5Q163.33-606.33 110.67-500q52.66 106.33 151.83 169.83 99.17 63.5 217.5 63.5t217.5-63.5Z"/>';
+var _svgHide = '<path d="m634-422-48.67-48.67q20.34-63-27-108-47.33-45-107.66-26.66L402-654q17-10 36.83-14.67 19.84-4.66 41.17-4.66 72.33 0 122.83 50.5T653.33-500q0 21.33-5 41.5T634-422Zm128.67 128-46-45.33Q762-373 796.17-414.17q34.16-41.16 52.5-85.83-50-107.67-147.84-170.5-97.83-62.83-214.16-62.83-37.67 0-76.34 6.66Q371.67-720 346-710l-51.33-52q37-16.33 87.66-27.17Q433-800 483.33-800q145.67 0 264 82.17Q865.67-635.67 920-500q-25 62.33-64.83 114.5-39.84 52.17-92.5 91.5ZM808-61.33 640-226.67q-35 13-76.17 19.84Q522.67-200 480-200q-147.67 0-266.33-82.17Q95-364.33 40-500q20.33-52.33 54.67-100.5 34.33-48.17 82-90.17L56-812l46.67-47.33 750 750-44.67 48ZM222.67-644q-34.34 26.67-65.34 66.33-31 39.67-46.66 77.67 50.66 107.67 150.16 170.5t224.5 62.83q28.67 0 56.34-3.5 27.66-3.5 45-9.83L532-335.33q-11 4.33-25 6.5-14 2.16-27 2.16-71.67 0-122.5-50.16Q306.67-427 306.67-500q0-13.67 2.16-27 2.17-13.33 6.5-25l-92.66-633.33ZM426-416Z"/>';
+if (_toggleBtn && _toggleSvg) {
+    _toggleBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        if (_btnShow) {
+            // 隐藏按钮 + 切为闭眼图标
+            document.getElementById('mainButtons').classList.remove('show');
+            showToast('已隐藏界面，点击任意一处地方显示', 'success');
+            _toggleSvg.innerHTML = _svgHide;
+            _btnShow = false;
+        } else {
+            // 显示按钮 + 切为睁眼图标
+            document.getElementById('mainButtons').classList.add('show');
+            _toggleSvg.innerHTML = _svgShow;
+            _btnShow = true;
+        }
+    });
+    document.addEventListener('click', function () {
+        if (!_btnShow) {
+            document.getElementById('mainButtons').classList.add('show');
+            _toggleSvg.innerHTML = _svgShow;
+            _btnShow = true;
+        }
+    });
 }

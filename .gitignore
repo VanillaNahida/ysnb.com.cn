@@ -2,3 +2,4 @@
 .user.ini
 __pycache__/
 sitemap*
+.codex

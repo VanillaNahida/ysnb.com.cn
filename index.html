@@ -31,6 +31,11 @@
                 <button class="btn btn-cancel" onclick="showDatePicker()">确认</button>
             </div>
         </div>
+        </div>
+    </div>
+    <!-- 隐藏/显示主按钮切换 -->
+    <div class="toggle-main-btn" id="toggleMainBtn" title="切换主界面">
+        <svg xmlns="http://www.w3.org/2000/svg" height="36px" viewBox="0 -960 960 960" width="36px" fill="currentColor"><path d="M602.83-377.17q50.5-50.5 50.5-122.83t-50.5-122.83q-50.5-50.5-122.83-50.5t-122.83 50.5q-50.5 50.5-50.5 122.83t50.5 122.83q50.5 50.5 122.83 50.5t122.83-50.5ZM401.5-421.5q-32.17-32.17-32.17-78.5t32.17-78.5q32.17-32.17 78.5-32.17t78.5 32.17q32.17 32.17 32.17 78.5t-32.17 78.5q-32.17 32.17-78.5 32.17t-78.5-32.17Zm-186.17 139Q96.67-365 40-500q56.67-135 175.33-217.5Q334-800 480-800t264.67 82.5Q863.33-635 920-500q-56.67 135-175.33 217.5Q626-200 480-200t-264.67-82.5ZM480-500Zm217.5 169.83q99.17-63.5 151.17-169.83-52-106.33-151.17-169.83-99.17-63.5-217.5-63.5t-217.5 63.5Q163.33-606.33 110.67-500q52.66 106.33 151.83 169.83 99.17 63.5 217.5 63.5t217.5-63.5Z"/></svg>
     </div>
 
     <!-- 第二层弹窗：出生日期选择 -->
@@ -89,9 +94,9 @@
             <p>(小声bb：其实你输入水繻的UID：300000000 也是可以通关的，毕竟我后端做了2周的缓存，非常的快！)</p>
 
             <div class="uid-slider-wrap">
-                <input type="range" class="uid-slider" id="uidSlider" min="100000000" max="600000000" value="100000000">
+                <input type="range" class="uid-slider" id="uidSlider" min="1000" max="6000" value="1000" step="1">
             </div>
-            <input type="text" class="uid-input" id="uidInput" readonly value="100000000">
+            <input type="text" class="uid-input" id="uidInput" value="100000000">
 
             <div class="loading-text" id="loadingText">正在查询玩家信息...</div>
             <div class="load-hint" id="fallbackHint"></div>
@@ -145,6 +150,7 @@
             <button class="btn btn-big" onclick="window.open('https://github.com/VanillaNahida/NTE-Custom-BAGEL', '_blank')">（推荐）异环小工具</button>
             <button class="btn btn-big" onclick="downloadBg()">下载当前背景图</button>
             <p class="footer-text">提示：在网站链接后面添加 /?skip 可自动跳过认证，更多逃课方法可加Q群或者把这个页面丢给AI了解</p>
+            <p style="color:#D32F2F;font-weight:700">右下角有隐藏主界面按钮，点击后可隐藏按钮组件查看背景图片</p>
             <p class="footer-text">GitHub地址：<a href="https://github.com/VanillaNahida/ysnb.com.cn" target="_blank" style="color: #2196F3;">GitHub - VanillaNahida/ysnb.com.cn</a></p>
         </div>
     </div>
