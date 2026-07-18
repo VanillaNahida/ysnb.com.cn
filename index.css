@@ -47,14 +47,6 @@ body {
     z-index: 0
 }
 
-.background::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(220, 210, 200, .2), rgba(240, 235, 228, .12) 40%, rgba(210, 200, 190, .18));
-    z-index: 1
-}
-
 .background.blur {
     filter: blur(15px) brightness(1.1)
 }
@@ -841,8 +833,6 @@ body {
     background-color: #81B139
 }
 
-
-
 /* 主按钮隐藏切换 */
 .toggle-main-btn {
     position: fixed;
@@ -852,8 +842,8 @@ body {
     cursor: pointer;
     opacity: 0.4;
     transition: opacity var(--transition);
-    color: rgba(0,0,0,.5);
-    padding: 6px;
+    color: rgba(0,0,0);
+    padding: 9px;
     border-radius: 8px;
     background: rgba(255,255,255,.4);
     backdrop-filter: blur(6px);
