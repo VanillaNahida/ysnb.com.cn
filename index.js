@@ -883,6 +883,25 @@ function skip() {
     console.log('这个后门都被你发现了？');
 }
 
+// 使用操作系统注册协议启动原神
+function startGenshineImpact() {
+    var ua = navigator.userAgent;
+    // iOS/iPadOS/Android
+    if (ua.indexOf('iPhone') !== -1 || ua.indexOf('iPad') !== -1 || ua.indexOf('iPod') !== -1 || ua.indexOf('Android') !== -1 || ua.indexOf('Adr') !== -1) {
+        window.open('yuanshen://');
+    } else if (ua.indexOf('OpenHarmony') !== -1) {
+        // 纯血鸿蒙
+        window.open('yuanshen://oig.mihoyo.com/ys');
+    } else if (ua.indexOf('Windows') !== -1) {
+         // 国际服
+        window.open('HYP-global://launchgame?gamebiz=hk4e_global&openGame=true');
+        // 国服
+        window.open('HYP-cn://launchgame?gamebiz=hk4e_cn&openGame=true');
+    } else {
+        window.open('https://oig.mihoyo.com/ys/', '_blank');
+    }
+}
+
 // 主按钮显示/隐藏切换（双向图标互换）
 var _btnShow = true;
 var _toggleBtn = document.getElementById('toggleMainBtn');
