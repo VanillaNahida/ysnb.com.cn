@@ -893,12 +893,8 @@ function startGenshineImpact() {
         // 纯血鸿蒙
         window.open('yuanshen://oig.mihoyo.com/ys');
     } else if (ua.indexOf('Windows') !== -1) {
-        // 国服
+        // Windows国服
         window.open('HYP-cn://launchgame?gamebiz=hk4e_cn&openGame=true');
-        // 国际服
-        setTimeout(function() {
-            window.open('HYP-global://launchgame?gamebiz=hk4e_global&openGame=true');
-        }, 100);
     } else {
         window.open('https://oig.mihoyo.com/ys/', '_blank');
     }
