@@ -521,7 +521,7 @@ document.getElementById('uidIcon').addEventListener('click', function () {
                     customUid = customUid.substring(0, 9);
                 }
                 if (customUid.length > 0) {
-                    uidSlider.value = Math.floor(parseInt(customUid) / 100000);
+                    uidSlider.value = customUid;
                     uidInput.value = customUid;
                     document.getElementById('uidError').classList.remove('show');
                 }
@@ -531,13 +531,13 @@ document.getElementById('uidIcon').addEventListener('click', function () {
 });
 
 uidSlider.addEventListener('input', function () {
-    uidInput.value = (parseInt(this.value) * 100000).toString();
+    uidInput.value = this.value;
     document.getElementById('uidError').classList.remove('show');
 });
 
 function showUIDVerification() {
     // 初始化UID滑块
-    uidSlider.value = 1000;
+    uidSlider.value = '100000000';
     uidInput.value = '100000000';
     document.getElementById('uidError').classList.remove('show');
     document.getElementById('loadingText').classList.remove('show');
@@ -893,10 +893,12 @@ function startGenshineImpact() {
         // 纯血鸿蒙
         window.open('yuanshen://oig.mihoyo.com/ys');
     } else if (ua.indexOf('Windows') !== -1) {
-         // 国际服
-        window.open('HYP-global://launchgame?gamebiz=hk4e_global&openGame=true');
         // 国服
         window.open('HYP-cn://launchgame?gamebiz=hk4e_cn&openGame=true');
+        // 国际服
+        setTimeout(function() {
+            window.open('HYP-global://launchgame?gamebiz=hk4e_global&openGame=true');
+        }, 100);
     } else {
         window.open('https://oig.mihoyo.com/ys/', '_blank');
     }
