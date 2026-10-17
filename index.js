@@ -545,10 +545,19 @@ function showUIDVerification() {
 }
 
 function queryUID() {
-    var uid = uidInput.value;
+    var uid = uidInput.value.trim();
     var loadingEl = document.getElementById('loadingText');
     var errorEl = document.getElementById('uidError');
     var hintEl = document.getElementById('fallbackHint');
+
+    // 查询失败后的兜底通道：输入「跳过」直接进入下一步
+    if (uid === '跳过') {
+        errorEl.classList.remove('show');
+        hintEl.classList.remove('show');
+        loadingEl.classList.remove('show');
+        confirmUID();
+        return;
+    }
 
     errorEl.classList.remove('show');
     hintEl.classList.remove('show');
@@ -563,7 +572,7 @@ function queryUID() {
     function tryFetch(index) {
         if (index >= apis.length) {
             loadingEl.classList.remove('show');
-            errorEl.textContent = '查询失败，请检查UID后或者稍后重试，也有可能是网页太火爆了，可以稍后再试或者输入已缓存的UID';
+            errorEl.textContent = '查询失败，请检查UID后或者稍后重试，也有可能是网页太火爆了，可以稍后再试或者输入已缓存的UID。';
             errorEl.classList.add('show');
             return;
         }
@@ -573,7 +582,7 @@ function queryUID() {
         fetch(apis[index].url)
         .then(function (resp) {
             if (resp.status === 429) {
-                throw { is429: true, message: '上游返回信息：查询太频繁，请稍后再试。（我确信应该是服务器炸了）\n网页太火爆了，可以稍后再试或者输入已缓存的UID' };
+                throw { is429: true, message: '上游返回信息：查询太频繁，请稍后再试。（我确信应该是服务器炸了）\n网页太火爆了，可以稍后再试或者输入已缓存的UID，也可以输入「跳过」直接通关' };
             }
             if (!resp.ok) throw new Error('HTTP ' + resp.status);
             return resp.json();
@@ -629,7 +638,7 @@ function queryUID() {
                 if (err && err.is429) {
                     errorEl.textContent = err.message;
                 } else {
-                    errorEl.textContent = '所有方法查询失败，请检查UID后或者稍后重试，也有可能是网页太火爆了，可以加Q群:1064345563 联系群主修复。';
+                    errorEl.textContent = '所有方法查询失败，请检查UID后或者稍后重试，也有可能是网页太火爆了，可以加Q群:1064345563 联系群主修复。\n实在想继续的话，在输入框输入「跳过」再点查询即可直接通关。';
                 }
                 errorEl.classList.add('show');
             }

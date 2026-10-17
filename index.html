@@ -1,19 +1,24 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-<!-- 最后更新日期：2026年7月17日 -->
+<!-- 最后更新日期：2026年10月17日 -->
 <head>
     <meta charset="UTF-8">
     <link id="icon" rel="icon" href="./favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>原神牛逼 | ysnb.com.cn</title>
-    <!-- 《蔚蓝档案》风格点击特效 -->
-    <link rel="stylesheet" href="https://cdn.xcnahida.cn/ba-spark/spark.css">
-    <canvas id="sparkCanvas"></canvas>
-    <script src="https://cdn.xcnahida.cn/ba-spark/spark.js" defer></script>
+    <title>原神牛逼 | ysnb.com.cn | 作者B站：@香草味的纳西妲喵</title>
+    <!-- 《蔚蓝档案》风格点击特效，完全还原游戏内效果 -->
+    <script src="https://cdn.jsdelivr.net/npm/ba-click-fx@1.2.25/dist/ba-click-fx.iife.js" defer></script>
+    <script defer>
+    document.addEventListener('DOMContentLoaded', function() {
+        new BAClickFX.BAClickFX();
+    });
+    </script>
     <!-- 《蔚蓝档案》风格鼠标指针 -->
     <link rel="stylesheet" href="https://cdn.xcnahida.cn/ba-spark/BlueArchiveCursor/cursor.css">
     <!-- AI写的太他妈冗余了，这里改为单独CSS文件外部引用 -->
     <link rel="stylesheet" href="./index.css">
+    <!-- 纳西妲生日会「旅叶知微」推广弹窗样式 -->
+    <link rel="stylesheet" href="./promotion/nahidafes.css">
 </head>
 <body>
 
@@ -90,8 +95,8 @@
             <p>检测到您可能不是原神资深玩家，请滑动下面滚动条选择您的UID</p>
             <p>需要原神等级 60 级且成就数大于 900 即可过关。</p>
             <p>已接入Enka、Minigg、米游社API（米游社UID状态缓存两周，不支持查签名和世界等级）</p>
-            <p>都查询失败的话可能是网站太火爆了，请稍后多点几次再试。或者来Q群 1064345563 询问作弊方法……嘿嘿！</p>
-            <p>(小声bb：其实你输入水繻的UID：300000000 也是可以通关的，毕竟我后端做了2周的缓存，非常的快！)</p>
+            <p>都查询失败的话可能是网站太火爆了，前端请求会报CORS错误，请稍后多点几次再试。或者来Q群 1064345563 询问作弊方法……嘿嘿！</p>
+            <p>(小声bb：如果三个接口都查询失败，但你还想继续往下走，直接在输入框输入「跳过」再点查询即可通关！)</p>
             <p>*2026年7月21日更新：降低难度，允许点击输入框输入UID查询</p>
 
             <div class="uid-slider-wrap">
@@ -124,8 +129,8 @@
 
     <!-- 底部备案号 -->
     <footer class="custom-footer" id="siteFooter">
-        <a href="https://xcnahida.cn" target="_blank" class="link">
-           2026 ysnb.com.cn 版权所有 | 点击跳转到香草的日记
+        <a href="https://www.xcnahida.cn/" target="_blank" class="link">
+           2026 ysnb.com.cn 版权所有 | 点击跳转到作者博客
         </a>
     </footer>
 
@@ -140,15 +145,15 @@
     <!-- 主页按钮组 -->
     <div class="main-buttons" id="mainButtons">
         <div class="main-buttons-bg">
-            <p class="footer-text">本网站由<a href="https://www.bt.cn/" target="_blank" style="color: #2196F3;">宝塔AI建站</a> + 香草的鬼点子生成</p>
+            <p class="footer-text">作者B站<a href="https://space.bilibili.com/1347891621" target="_blank" style="color: #2196F3;">@香草味的纳西妲喵</a> ，视频出现该网站请标明原作者和视频链接<br>本网站由<a href="https://www.bt.cn/" target="_blank" style="color: #2196F3;">宝塔AI建站</a> + 香草的鬼点子生成</p>
             <!-- <p class="footer-text">请支持<a href="https://astrbot.app/" target="_blank" style="color: #2196F3;"></a>AstrBot</a>谢谢喵！</p> -->
+            <button class="btn btn-big" onclick="window.open('https://space.bilibili.com/1347891621', '_blank')">前往作者的B站主页</button>
             <button class="btn btn-big" onclick="installYuanShen()">一键安装原神</button>
             <button class="btn btn-big" onclick="startGenshineImpact()">一键启动原神</button>
             <button class="btn btn-big" onclick="hotVideos()">&#x1F51E;3D区热门大片&#x1F51E;</button>
             <button class="btn btn-big" onclick="goRival()">去友商那里证明原神牛逼！（随机30+款二游）</button>
             <button class="btn btn-big" onclick="window.open('https://xcnahida.cn/contact', '_blank')">加入我的QQ群</button>
             <button class="btn btn-big" onclick="window.open('https://game.xcnahida.cn/', '_blank')">玩会游戏！（包含张雪峰快跑带排行榜功能）</button>
-            <button class="btn btn-big" onclick="window.open('https://github.com/VanillaNahida/NTE-Custom-BAGEL', '_blank')">（推荐）异环小工具</button>
             <button class="btn btn-big" onclick="downloadBg()">下载当前背景图</button>
             <p class="footer-text">提示：在网站链接后面添加 /?skip 可自动跳过认证，更多逃课方法可加Q群或者把这个页面丢给AI了解</p>
             <p class="footer-text">*本网站背景图仅为站长个人爱好 ᕕ(◠ڼ◠)ᕗ，与任何组织无关 ᕕ(◠ڼ◠)ᕗ。<a href="https://xcnahida.cn" target="_blank" style="color: #2196F3;">点击前往站长的博客日记。</a></p>
@@ -169,5 +174,7 @@
     <div class="toast-container" id="toastContainer"></div>
     <!-- 移除index页面的冗余JS函数，全抽成单独的JS文件 -->
     <script src="index.js"></script>
+    <!-- 纳西妲生日会「旅叶知微」推广弹窗（验证通过进入主界面时弹出） -->
+    <script src="promotion/nahidafes.js"></script>
 </body>
 </html>

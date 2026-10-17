@@ -1,0 +1,328 @@
+/* 2026 纳西妲生日会「旅叶知微」全国大屏应援计划 推广弹窗样式 */
+.nahidafes-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: rgba(0, 0, 0, .45);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    opacity: 1;
+    visibility: visible;
+    transition: opacity var(--transition), visibility var(--transition)
+}
+
+.nahidafes-overlay.nahidafes-hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none
+}
+
+.nahidafes-modal {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 540px;
+    max-height: 88vh;
+    overflow: hidden;
+    padding: 34px 36px 24px;
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, .55);
+    background: rgba(255, 255, 255, .94);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, .22), inset 0 1px 0 rgba(255, 255, 255, .6);
+    text-align: center;
+    animation: nahidafesIn .45s cubic-bezier(.16, 1, .3, 1)
+}
+
+/* 头部/尾部固定，只有中间的正文+海报区域滚动 */
+.nahidafes-icon,
+.nahidafes-title,
+.nahidafes-subtitle,
+.nahidafes-mute,
+.nahidafes-buttons {
+    flex: 0 0 auto
+}
+
+.nahidafes-scroll {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    margin-top: 2px
+}
+
+.nahidafes-poster {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    margin-top: 14px;
+    border-radius: 14px;
+    border: 1px solid rgba(129, 177, 57, .18);
+    background: rgba(0, 0, 0, .03);
+    user-select: none;
+    -webkit-user-drag: none
+}
+
+.nahidafes-modal::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, transparent, #81B139, #4DB3A6, var(--c-gold), transparent);
+    opacity: .75
+}
+
+@keyframes nahidafesIn {
+    from {
+        opacity: 0;
+        transform: scale(.92) translateY(20px)
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0)
+    }
+}
+
+.nahidafes-icon {
+    font-size: 42px;
+    line-height: 1;
+    margin-bottom: 10px;
+    filter: drop-shadow(0 4px 8px rgba(129, 177, 57, .25))
+}
+
+.nahidafes-title {
+    font-size: 22px;
+    color: #4F7A23;
+    letter-spacing: 1px;
+    margin-bottom: 6px
+}
+
+.nahidafes-subtitle {
+    font-size: 14px;
+    color: var(--c-gold);
+    letter-spacing: .5px;
+    margin-bottom: 16px
+}
+
+.nahidafes-body {
+    padding: 14px 16px;
+    border-radius: 14px;
+    background: rgba(129, 177, 57, .07);
+    border: 1px solid rgba(129, 177, 57, .16)
+}
+
+.nahidafes-body p {
+    font-size: 14px;
+    line-height: 1.75;
+    color: #454545;
+    text-align: left;
+    margin-bottom: 8px
+}
+
+.nahidafes-body p:last-child {
+    margin-bottom: 0
+}
+
+.nahidafes-body .nahidafes-group {
+    margin: 10px 0;
+    font-weight: 700;
+    color: #2c2c2c
+}
+
+.nahidafes-body .nahidafes-group a {
+    color: #12B7F5;
+    text-decoration: none;
+    border-bottom: 1px dashed rgba(18, 183, 245, .5);
+    transition: color var(--transition), border-color var(--transition)
+}
+
+.nahidafes-body .nahidafes-group a:hover {
+    color: #0a91c7;
+    border-bottom-color: #0a91c7
+}
+
+.nahidafes-body .nahidafes-question {
+    color: #4E9A2E;
+    font-weight: 700
+}
+
+.nahidafes-body .nahidafes-date {
+    text-align: center;
+    font-weight: 700;
+    color: var(--c-gold);
+    letter-spacing: 1px
+}
+
+.nahidafes-mute {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 16px;
+    font-size: 13px;
+    color: rgba(0, 0, 0, .5);
+    cursor: pointer;
+    user-select: none
+}
+
+.nahidafes-mute input {
+    width: 16px;
+    height: 16px;
+    accent-color: #6FA83C;
+    cursor: pointer
+}
+
+.nahidafes-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 18px
+}
+
+.nahidafes-btn {
+    min-width: 132px;
+    padding: 12px 26px;
+    border: none;
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: 15px;
+    letter-spacing: .5px;
+    cursor: pointer;
+    transition: transform var(--transition), box-shadow var(--transition)
+}
+
+.nahidafes-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, .15)
+}
+
+.nahidafes-btn:active {
+    transform: translateY(0) scale(.97)
+}
+
+.nahidafes-btn-close {
+    background: rgba(0, 0, 0, .06);
+    color: rgba(0, 0, 0, .6);
+    border: 1px solid rgba(0, 0, 0, .08)
+}
+
+.nahidafes-btn-view {
+    background: linear-gradient(135deg, #8CC63F, #4E9A2E);
+    color: #fff;
+    box-shadow: 0 6px 16px rgba(78, 154, 46, .3)
+}
+
+/* 平板 */
+@media(max-width:900px) {
+    .nahidafes-overlay {
+        padding: 18px
+    }
+
+    .nahidafes-modal {
+        max-width: 92%;
+        padding: 28px 26px 20px;
+        border-radius: 22px
+    }
+
+    .nahidafes-title {
+        font-size: 20px
+    }
+
+    .nahidafes-body p {
+        font-size: 13.5px
+    }
+}
+
+/* 手机 */
+@media(max-width:600px) {
+    .nahidafes-overlay {
+        padding: 12px
+    }
+
+    .nahidafes-modal {
+        max-width: 100%;
+        max-height: 92vh;
+        padding: 24px 18px 18px;
+        border-radius: 20px
+    }
+
+    .nahidafes-icon {
+        font-size: 34px;
+        margin-bottom: 8px
+    }
+
+    .nahidafes-title {
+        font-size: 18px
+    }
+
+    .nahidafes-subtitle {
+        font-size: 13px;
+        margin-bottom: 12px
+    }
+
+    .nahidafes-body {
+        padding: 12px
+    }
+
+    .nahidafes-scroll {
+        margin-top: 0
+    }
+
+    .nahidafes-poster {
+        max-width: 100%;
+        height: auto;
+        margin-top: 10px;
+        border-radius: 12px
+    }
+
+    .nahidafes-body p {
+        font-size: 13px;
+        line-height: 1.7;
+        margin-bottom: 6px
+    }
+
+    .nahidafes-mute {
+        margin-top: 14px;
+        font-size: 12px
+    }
+
+    .nahidafes-buttons {
+        gap: 10px;
+        margin-top: 14px
+    }
+
+    .nahidafes-btn {
+        flex: 1 1 0;
+        min-width: 0;
+        padding: 11px 12px;
+        font-size: 14px;
+        border-radius: 11px
+    }
+}
+
+/* 横屏小高度设备 */
+@media(max-height:560px) {
+    .nahidafes-modal {
+        max-height: 94vh;
+        padding-top: 22px
+    }
+
+    .nahidafes-icon {
+        font-size: 30px;
+        margin-bottom: 6px
+    }
+}
