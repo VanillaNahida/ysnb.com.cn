@@ -3,3 +3,5 @@
 __pycache__/
 sitemap*
 .codex
+# Redis 等私有凭证，不要提交（api/visit_count.php 会读取它）
+api/config.php

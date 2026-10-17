@@ -280,7 +280,7 @@ function submitDate() {
     // 彩蛋：2077年，优先检查
     if (year === 2077) {
         var eggHtml = '<p style="font-size: 20px; font-weight: bold; margin-bottom: 16px;">🎉 你触发了一个彩蛋！🎉</p>'
-            + '<p style="font-size: 14px; margin-bottom: 12px;">”牛逼啊V“，赛博朋克2077，经典永流传</p>'
+            + '<p style="font-size: 14px; margin-bottom: 12px;">“牛逼啊V”，赛博朋克2077，经典永流传</p>'
             + '<audio controls autoplay id="eggAudio" style="width: 100%; border-radius: 8px;">'
             + '<source src="./assets/Samuel Kim、Lorien - I Really Want to Stay at Your House.mp3" type="audio/mpeg">'
             + '您的浏览器不支持音频播放'
@@ -943,3 +943,47 @@ if (_toggleBtn && _toggleSvg) {
         }
     });
 }
+
+// 访问统计：静默请求计数器，不插入 DOM、不上屏、失败也不打扰用户
+(function () {
+    var counterUrl = 'https://count.getloli.com/@ysnb.com.cn?name=ysnb.com.cn&theme=minecraft&padding=6&offset=0&align=top&scale=1&pixelated=1&darkmode=auto';
+    if (!window.fetch) return;
+    // no-cors：跨域也能把请求发出去且不产生 CORS 报错；no-store：避免命中缓存导致漏计
+    fetch(counterUrl, { mode: 'no-cors', cache: 'no-store', keepalive: true }).catch(function () {});
+})();
+
+// 访问统计：把接口返回的 PV/UV 填到底部展示区（中文标签，数字保持阿拉伯）
+function fillVisitStats(data) {
+    var pv = parseInt(data.pv, 10);
+    var uv = parseInt(data.uv, 10);
+    var totalPv = parseInt(data.totalPv, 10);
+    var totalUv = parseInt(data.totalUv, 10);
+
+    // 任一数值缺失就整体不展示，避免露出半截数字
+    if ([pv, uv, totalPv, totalUv].some(function (v) { return isNaN(v); })) return;
+
+    // 千分位：每三位数用逗号分隔（如 1800137 → 1,800,137）
+    var fmt = function (n) { return n.toLocaleString('en-US'); };
+
+    document.getElementById('visitPvToday').textContent = fmt(pv);
+    document.getElementById('visitUvToday').textContent = fmt(uv);
+    document.getElementById('visitPvTotal').textContent = fmt(totalPv);
+    document.getElementById('visitUvTotal').textContent = fmt(totalUv);
+    document.getElementById('visitStats').style.display = '';
+}
+
+// 访问统计：自建接口（服务端 Redis 记 PV/UV），与上面的第三方计数器并行上报
+(function () {
+    if (!window.fetch) return;
+    fetch('api/visit_count.php', { cache: 'no-store' })
+        .then(function (resp) {
+            if (!resp.ok) throw new Error('HTTP ' + resp.status);
+            return resp.json();
+        })
+        .then(function (data) {
+            if (data && data.ok === true) fillVisitStats(data);
+        })
+        .catch(function () {
+            // 统计失败不影响页面，展示区继续保持隐藏
+        });
+})();
